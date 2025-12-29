@@ -1,0 +1,1 @@
+export { generateERDiagram } from './generator';
