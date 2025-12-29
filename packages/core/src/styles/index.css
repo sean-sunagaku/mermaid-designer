@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* React Flow custom styles */
+.react-flow__node-entity {
+  @apply bg-white rounded-lg shadow-md border border-slate-200;
+}
+
+.react-flow__node-entity.selected {
+  @apply ring-2 ring-primary-500;
+}
+
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #3b82f6;
+  stroke-width: 3;
+}
+
+/* Entity node styles */
+.entity-node {
+  @apply min-w-[200px];
+}
+
+.entity-node__header {
+  @apply bg-primary-500 text-white px-3 py-2 rounded-t-lg font-semibold text-sm;
+}
+
+.entity-node__body {
+  @apply bg-white rounded-b-lg;
+}
+
+.entity-node__attribute {
+  @apply px-3 py-1.5 border-b border-slate-100 last:border-b-0 text-sm flex items-center gap-2;
+}
+
+.entity-node__attribute-icon {
+  @apply w-4 h-4 flex-shrink-0;
+}
+
+.entity-node__attribute-name {
+  @apply font-medium text-slate-700;
+}
+
+.entity-node__attribute-type {
+  @apply text-slate-500 ml-auto;
+}
+
+/* Panel styles */
+.side-panel {
+  @apply bg-white border-l border-slate-200 w-80 overflow-y-auto;
+}
+
+.side-panel__header {
+  @apply px-4 py-3 border-b border-slate-200 font-semibold text-slate-800;
+}
+
+.side-panel__section {
+  @apply px-4 py-3 border-b border-slate-100;
+}
+
+.side-panel__label {
+  @apply block text-sm font-medium text-slate-600 mb-1;
+}
+
+.side-panel__input {
+  @apply w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+}
+
+/* Toolbar styles */
+.toolbar {
+  @apply bg-white border-b border-slate-200 px-4 py-2 flex items-center gap-2;
+}
+
+.toolbar__button {
+  @apply px-3 py-1.5 rounded-md text-sm font-medium transition-colors;
+}
+
+.toolbar__button--primary {
+  @apply bg-primary-500 text-white hover:bg-primary-600;
+}
+
+.toolbar__button--secondary {
+  @apply bg-slate-100 text-slate-700 hover:bg-slate-200;
+}
+
+.toolbar__button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Code editor styles */
+.code-editor {
+  @apply font-mono text-sm;
+}
+
+.code-editor__textarea {
+  @apply w-full h-full p-4 bg-slate-900 text-slate-100 resize-none focus:outline-none;
+}
+
+.code-editor__error {
+  @apply text-red-400 text-xs mt-1;
+}

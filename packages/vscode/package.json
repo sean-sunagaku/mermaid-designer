@@ -1,0 +1,61 @@
+{
+  "name": "mermaid-er-editor",
+  "displayName": "Mermaid ER Diagram Editor",
+  "description": "Visual editor for Mermaid ER diagrams",
+  "version": "0.1.0",
+  "publisher": "mermaid-er-editor",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "mermaid",
+    "er-diagram",
+    "database",
+    "visual-editor"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "mermaid-er-editor.erDiagram",
+        "displayName": "Mermaid ER Diagram Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.er.md"
+          },
+          {
+            "filenamePattern": "*.erd.mmd"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "commands": [
+      {
+        "command": "mermaid-er-editor.newDiagram",
+        "title": "New ER Diagram",
+        "category": "Mermaid ER"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run build",
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "package": "vsce package --no-dependencies",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.19.0"
+  },
+  "dependencies": {
+    "@mermaid-er-editor/core": "*"
+  }
+}
