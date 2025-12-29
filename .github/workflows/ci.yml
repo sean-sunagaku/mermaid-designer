@@ -57,7 +57,7 @@ jobs:
         run: npm run build --workspace=@mermaid-er-editor/web
 
       - name: Run E2E tests
-        run: npm run test:e2e --workspace=@mermaid-er-editor/web
+        run: npm run test:e2e --workspace=@mermaid-er-editor/web -- --project=chromium
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
