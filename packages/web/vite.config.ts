@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   server: {
-    port: 3000,
+    port: 1837,
   },
   build: {
     outDir: 'dist',
