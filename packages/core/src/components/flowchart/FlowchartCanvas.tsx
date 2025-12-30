@@ -32,6 +32,7 @@ export const FlowchartCanvas = () => {
     selectedNodeId,
     selectedEdgeId,
     moveNode,
+    addNode,
     addEdge,
     deleteNode,
     deleteEdge,
@@ -49,6 +50,16 @@ export const FlowchartCanvas = () => {
       const target = event.target as HTMLElement;
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
         return;
+      }
+
+      // N: ノード追加
+      if (event.key === 'n' || event.key === 'N') {
+        if (!event.ctrlKey && !event.metaKey) {
+          const id = addNode({});
+          selectNode(id);
+          event.preventDefault();
+          return;
+        }
       }
 
       // Ctrl/Cmd + Z: Undo
@@ -83,7 +94,7 @@ export const FlowchartCanvas = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedNodeId, selectedEdgeId, deleteNode, deleteEdge, undo, redo, canUndo, canRedo]);
+  }, [selectedNodeId, selectedEdgeId, addNode, deleteNode, deleteEdge, selectNode, undo, redo, canUndo, canRedo]);
 
   // ローカル位置管理: ストアとは独立して位置を管理
   // ストアにはドラッグ終了時にのみ保存し、undo/redo時にはストアから同期
@@ -268,6 +279,9 @@ export const FlowchartCanvas = () => {
         connectionMode={ConnectionMode.Loose}
         snapToGrid
         snapGrid={[15, 15]}
+        panOnScroll
+        panOnScrollSpeed={4}
+        panOnDrag
         defaultEdgeOptions={{ type: 'flow' }}
         fitView
       >

@@ -121,7 +121,7 @@ export const RelationEdge = memo(
             />
             <CardinalityMarker
               x={targetMarkerX}
-              y={targetMarkerY - 12}
+              y={targetMarkerY + 14}
               cardinality={relation.targetCardinality}
             />
           </>

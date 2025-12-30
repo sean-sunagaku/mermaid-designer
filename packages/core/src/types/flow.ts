@@ -5,6 +5,8 @@ import { EREntity, ERRelation } from './ast';
 export interface EntityNodeData {
   entity: EREntity;
   isSelected: boolean;
+  isNewlyCreated?: boolean;
+  onClearNewlyCreated?: () => void;
 }
 
 /** エンティティノードの型 */

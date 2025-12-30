@@ -307,6 +307,13 @@ export const useERStore = create<ERStore>()(
         entities: state.entities,
         relations: state.relations,
       }),
+      equality: (pastState, currentState) => {
+        // エンティティとリレーションが同じなら同一とみなす
+        return (
+          JSON.stringify(pastState.entities) === JSON.stringify(currentState.entities) &&
+          JSON.stringify(pastState.relations) === JSON.stringify(currentState.relations)
+        );
+      },
     }
   )
 );
