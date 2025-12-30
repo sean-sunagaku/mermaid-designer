@@ -9,6 +9,7 @@ import ReactFlow, {
   NodeChange,
   NodeTypes,
   EdgeTypes,
+  ConnectionMode,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -58,6 +59,8 @@ export const Canvas: React.FC = () => {
       id: relation.id,
       source: relation.sourceEntityId,
       target: relation.targetEntityId,
+      sourceHandle: relation.sourceHandle,
+      targetHandle: relation.targetHandle,
       type: 'relation',
       data: {
         relation,
@@ -91,6 +94,8 @@ export const Canvas: React.FC = () => {
         addRelation({
           sourceEntityId: connection.source,
           targetEntityId: connection.target,
+          sourceHandle: connection.sourceHandle || undefined,
+          targetHandle: connection.targetHandle || undefined,
         });
       }
     },
@@ -131,6 +136,7 @@ export const Canvas: React.FC = () => {
         onPaneClick={onPaneClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        connectionMode={ConnectionMode.Loose}
         fitView
         snapToGrid
         snapGrid={[15, 15]}

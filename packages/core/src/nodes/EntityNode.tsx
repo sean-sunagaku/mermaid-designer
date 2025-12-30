@@ -57,15 +57,17 @@ export const EntityNode = memo(({ data, selected }: NodeProps<EntityNodeData>) =
         )}
       </div>
 
-      {/* 接続ハンドル */}
+      {/* 接続ハンドル - 全方向から接続可能（ConnectionMode.Looseで双方向接続） */}
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Top}
+        id="top"
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
       <Handle
-        type="target"
-        position={Position.Left}
+        type="source"
+        position={Position.Right}
+        id="right"
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
       <Handle
@@ -75,9 +77,9 @@ export const EntityNode = memo(({ data, selected }: NodeProps<EntityNodeData>) =
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
       <Handle
-        type="target"
-        position={Position.Top}
-        id="top"
+        type="source"
+        position={Position.Left}
+        id="left"
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
     </div>

@@ -193,6 +193,8 @@ export const useERStore = create<ERStore>()(
           targetCardinality: relation.targetCardinality || 'ZERO_OR_MORE',
           label: relation.label,
           identifying: relation.identifying ?? true,
+          sourceHandle: relation.sourceHandle,
+          targetHandle: relation.targetHandle,
         };
 
         set((state) => ({
