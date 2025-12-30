@@ -9,6 +9,7 @@ import ReactFlow, {
   NodeChange,
   NodeTypes,
   EdgeTypes,
+  ConnectionMode,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -58,6 +59,8 @@ export const Canvas: React.FC = () => {
       id: relation.id,
       source: relation.sourceEntityId,
       target: relation.targetEntityId,
+      sourceHandle: relation.sourceHandle,
+      targetHandle: relation.targetHandle,
       type: 'relation',
       data: {
         relation,
@@ -88,13 +91,25 @@ export const Canvas: React.FC = () => {
   const onConnect = useCallback(
     (connection: Connection) => {
       if (connection.source && connection.target) {
+        // 同じエンティティ間に既に接続がある場合は追加しない
+        const existingRelation = relations.find(
+          (r) =>
+            (r.sourceEntityId === connection.source && r.targetEntityId === connection.target) ||
+            (r.sourceEntityId === connection.target && r.targetEntityId === connection.source)
+        );
+        if (existingRelation) {
+          return; // 既に接続済み
+        }
+
         addRelation({
           sourceEntityId: connection.source,
           targetEntityId: connection.target,
+          sourceHandle: connection.sourceHandle || undefined,
+          targetHandle: connection.targetHandle || undefined,
         });
       }
     },
-    [addRelation]
+    [addRelation, relations]
   );
 
   // ノードのクリック
@@ -131,6 +146,7 @@ export const Canvas: React.FC = () => {
         onPaneClick={onPaneClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        connectionMode={ConnectionMode.Loose}
         fitView
         snapToGrid
         snapGrid={[15, 15]}

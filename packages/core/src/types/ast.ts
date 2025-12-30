@@ -41,6 +41,8 @@ export interface ERRelation {
   targetCardinality: Cardinality;
   label?: string;
   identifying: boolean;
+  sourceHandle?: string; // 接続元ハンドルID (e.g., 'right-source', 'bottom-source')
+  targetHandle?: string; // 接続先ハンドルID (e.g., 'left-target', 'top-target')
 }
 
 /** ER図全体 */
