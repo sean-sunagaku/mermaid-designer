@@ -91,6 +91,16 @@ export const Canvas: React.FC = () => {
   const onConnect = useCallback(
     (connection: Connection) => {
       if (connection.source && connection.target) {
+        // 同じエンティティ間に既に接続がある場合は追加しない
+        const existingRelation = relations.find(
+          (r) =>
+            (r.sourceEntityId === connection.source && r.targetEntityId === connection.target) ||
+            (r.sourceEntityId === connection.target && r.targetEntityId === connection.source)
+        );
+        if (existingRelation) {
+          return; // 既に接続済み
+        }
+
         addRelation({
           sourceEntityId: connection.source,
           targetEntityId: connection.target,
@@ -99,7 +109,7 @@ export const Canvas: React.FC = () => {
         });
       }
     },
-    [addRelation]
+    [addRelation, relations]
   );
 
   // ノードのクリック
