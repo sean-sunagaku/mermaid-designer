@@ -1,0 +1,79 @@
+{
+  "common": {
+    "home": "ホーム",
+    "delete": "削除",
+    "add": "追加",
+    "cancel": "キャンセル",
+    "confirm": "確認"
+  },
+  "toolbar": {
+    "addEntity": "+ エンティティ追加",
+    "undo": "元に戻す",
+    "redo": "やり直し",
+    "undoShortcut": "元に戻す (Ctrl+Z)",
+    "redoShortcut": "やり直し (Ctrl+Y)",
+    "reset": "リセット",
+    "resetConfirm": "図をリセットしますか？すべてのエンティティとリレーションが削除されます。"
+  },
+  "entityPanel": {
+    "entityName": "エンティティ名",
+    "attributes": "属性",
+    "addAttribute": "+ 追加",
+    "noAttributes": "属性が定義されていません",
+    "deleteEntity": "エンティティを削除",
+    "deleteConfirm": "エンティティ「{{name}}」を削除しますか？",
+    "namePlaceholder": "名前",
+    "typePlaceholder": "型",
+    "primaryKey": "PK",
+    "foreignKey": "FK",
+    "uniqueKey": "UK",
+    "deleteAttribute": "属性を削除"
+  },
+  "relationPanel": {
+    "sourceCardinality": "ソースカーディナリティ ({{name}})",
+    "targetCardinality": "ターゲットカーディナリティ ({{name}})",
+    "exactlyOne": "1つのみ",
+    "zeroOrOne": "0または1",
+    "oneOrMore": "1以上",
+    "zeroOrMore": "0以上",
+    "labelOptional": "ラベル (任意)",
+    "labelPlaceholder": "例: places, contains",
+    "identifyingRelation": "識別リレーション (実線)",
+    "nonIdentifyingHint": "非識別リレーション (破線) にするにはチェックを外す",
+    "deleteRelation": "リレーションを削除",
+    "deleteConfirm": "このリレーションを削除しますか？",
+    "unknown": "不明"
+  },
+  "sidePanel": {
+    "properties": "プロパティ",
+    "selectHint": "エンティティまたはリレーションを選択してプロパティを編集",
+    "entity": "エンティティ: {{name}}",
+    "relation": "リレーション"
+  },
+  "entityNode": {
+    "noAttributes": "属性なし"
+  },
+  "codeEditor": {
+    "title": "Mermaid コード",
+    "lineError": "{{line}}行目: {{message}}"
+  },
+  "homePage": {
+    "title": "Mermaid ER図エディター",
+    "description": "リアルタイムのMermaidコード同期で、ER図を視覚的に作成・編集",
+    "startEditing": "編集を開始",
+    "visualEditing": "ビジュアル編集",
+    "visualEditingDesc": "ドラッグ＆ドロップでエンティティを配置、直感的なUIでリレーションを接続",
+    "bidirectionalSync": "双方向同期",
+    "bidirectionalSyncDesc": "GUIでもコードでも編集可能 - 変更は自動同期",
+    "exportReady": "エクスポート対応",
+    "exportReadyDesc": "Mermaidコード、PNG、SVG形式でエクスポート"
+  },
+  "editorPage": {
+    "backToHome": "ホーム",
+    "title": "Mermaid ER図エディター"
+  },
+  "languageSwitcher": {
+    "en": "英語",
+    "ja": "日本語"
+  }
+}

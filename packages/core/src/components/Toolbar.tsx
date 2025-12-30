@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useERStore, useUndoRedo } from '../store';
 
 export const Toolbar: React.FC = () => {
+  const { t } = useTranslation();
   const { addEntity, reset } = useERStore();
   const { undo, redo, canUndo, canRedo } = useUndoRedo();
 
@@ -20,10 +22,10 @@ export const Toolbar: React.FC = () => {
   }, [redo]);
 
   const handleReset = useCallback(() => {
-    if (confirm('Reset the diagram? This will clear all entities and relations.')) {
+    if (confirm(t('toolbar.resetConfirm'))) {
       reset();
     }
-  }, [reset]);
+  }, [reset, t]);
 
   return (
     <div className="toolbar bg-white border-b border-slate-200 px-4 py-2 flex items-center gap-2">
@@ -31,7 +33,7 @@ export const Toolbar: React.FC = () => {
         onClick={handleAddEntity}
         className="toolbar__button toolbar__button--primary px-3 py-1.5 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors"
       >
-        + Add Entity
+        {t('toolbar.addEntity')}
       </button>
 
       <div className="w-px h-6 bg-slate-200 mx-2" />
@@ -40,18 +42,18 @@ export const Toolbar: React.FC = () => {
         onClick={handleUndo}
         disabled={!canUndo()}
         className="toolbar__button toolbar__button--secondary px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        title="Undo (Ctrl+Z)"
+        title={t('toolbar.undoShortcut')}
       >
-        Undo
+        {t('toolbar.undo')}
       </button>
 
       <button
         onClick={handleRedo}
         disabled={!canRedo()}
         className="toolbar__button toolbar__button--secondary px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        title="Redo (Ctrl+Y)"
+        title={t('toolbar.redoShortcut')}
       >
-        Redo
+        {t('toolbar.redo')}
       </button>
 
       <div className="flex-1" />
@@ -60,7 +62,7 @@ export const Toolbar: React.FC = () => {
         onClick={handleReset}
         className="toolbar__button px-3 py-1.5 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
       >
-        Reset
+        {t('toolbar.reset')}
       </button>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useERStore } from '../store';
 
 interface CodeEditorProps {
@@ -6,6 +7,7 @@ interface CodeEditorProps {
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({ className = '' }) => {
+  const { t } = useTranslation();
   const { mermaidCode, parseErrors, updateFromCode } = useERStore();
   const [localCode, setLocalCode] = useState(mermaidCode);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -49,7 +51,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ className = '' }) => {
   return (
     <div className={`code-editor flex flex-col h-full ${className}`}>
       <div className="code-editor__header px-3 py-2 bg-slate-800 text-slate-300 text-sm font-medium border-b border-slate-700">
-        Mermaid Code
+        {t('codeEditor.title')}
       </div>
 
       <div className="relative flex-1">
@@ -72,7 +74,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ className = '' }) => {
         <div className="code-editor__errors px-3 py-2 bg-red-900/50 border-t border-red-800">
           {parseErrors.map((error, index) => (
             <div key={index} className="code-editor__error text-red-400 text-xs">
-              Line {error.line}: {error.message}
+              {t('codeEditor.lineError', { line: error.line, message: error.message })}
             </div>
           ))}
         </div>
