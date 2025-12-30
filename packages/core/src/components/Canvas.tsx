@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -13,7 +13,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import { useERStore } from '../store';
+import { useERStore, useUndoRedo } from '../store';
 import { EntityNode } from '../nodes/EntityNode';
 import { RelationEdge } from '../edges/RelationEdge';
 import { EntityNodeData } from '../types/flow';
@@ -37,7 +37,77 @@ export const Canvas: React.FC = () => {
     selectRelation,
     clearSelection,
     addRelation,
+    addEntity,
+    deleteEntity,
+    deleteRelation,
   } = useERStore();
+
+  const { undo, redo, canUndo, canRedo } = useUndoRedo();
+
+  // 新規作成されたエンティティIDを追跡
+  const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null);
+  const newlyCreatedIdRef = useRef<string | null>(null);
+
+  // キーボードショートカット
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // 入力フィールドにフォーカスがある場合は無視
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // E: エンティティ追加
+      if (event.key === 'e' || event.key === 'E') {
+        if (!event.ctrlKey && !event.metaKey) {
+          const id = addEntity();
+          selectEntity(id);
+          setNewlyCreatedId(id);
+          newlyCreatedIdRef.current = id;
+          event.preventDefault();
+          return;
+        }
+      }
+
+      // Ctrl/Cmd + Z: Undo
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+        if (canUndo()) {
+          undo();
+          event.preventDefault();
+        }
+        return;
+      }
+
+      // Ctrl/Cmd + Shift + Z または Ctrl/Cmd + Y: Redo
+      if ((event.ctrlKey || event.metaKey) && (event.key === 'y' || (event.key === 'z' && event.shiftKey))) {
+        if (canRedo()) {
+          redo();
+          event.preventDefault();
+        }
+        return;
+      }
+
+      // Delete/Backspace: 削除
+      if (event.key === 'Delete' || event.key === 'Backspace') {
+        if (selectedEntityId) {
+          deleteEntity(selectedEntityId);
+          event.preventDefault();
+        } else if (selectedRelationId) {
+          deleteRelation(selectedRelationId);
+          event.preventDefault();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedEntityId, selectedRelationId, addEntity, deleteEntity, deleteRelation, selectEntity, undo, redo, canUndo, canRedo]);
+
+  // 新規作成フラグをクリア
+  const handleClearNewlyCreated = useCallback(() => {
+    setNewlyCreatedId(null);
+    newlyCreatedIdRef.current = null;
+  }, []);
 
   // エンティティをReact Flowノードに変換
   const nodes: Node<EntityNodeData>[] = useMemo(() => {
@@ -48,10 +118,12 @@ export const Canvas: React.FC = () => {
       data: {
         entity,
         isSelected: entity.id === selectedEntityId,
+        isNewlyCreated: entity.id === newlyCreatedId,
+        onClearNewlyCreated: handleClearNewlyCreated,
       },
       selected: entity.id === selectedEntityId,
     }));
-  }, [entities, selectedEntityId]);
+  }, [entities, selectedEntityId, newlyCreatedId, handleClearNewlyCreated]);
 
   // リレーションをReact Flowエッジに変換
   const edges: Edge[] = useMemo(() => {
@@ -150,6 +222,9 @@ export const Canvas: React.FC = () => {
         fitView
         snapToGrid
         snapGrid={[15, 15]}
+        panOnScroll
+        panOnScrollSpeed={4}
+        panOnDrag
         defaultEdgeOptions={{
           type: 'relation',
         }}

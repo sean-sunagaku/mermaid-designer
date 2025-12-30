@@ -132,6 +132,8 @@ export const SequenceCanvas = () => {
         connectionMode={ConnectionMode.Loose}
         defaultEdgeOptions={{ type: 'message' }}
         fitView
+        panOnScroll
+        panOnScrollSpeed={4}
         panOnDrag
         zoomOnScroll
       >
