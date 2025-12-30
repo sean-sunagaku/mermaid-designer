@@ -171,19 +171,49 @@ describe('generateERDiagram', () => {
         {
           id: '3',
           name: 'ZEBRA',
-          attributes: [{ id: 'a1', name: 'id', type: 'int', isPrimaryKey: true, isForeignKey: false, isUnique: false, isNullable: false }],
+          attributes: [
+            {
+              id: 'a1',
+              name: 'id',
+              type: 'int',
+              isPrimaryKey: true,
+              isForeignKey: false,
+              isUnique: false,
+              isNullable: false,
+            },
+          ],
           position: { x: 0, y: 0 },
         },
         {
           id: '1',
           name: 'APPLE',
-          attributes: [{ id: 'a2', name: 'id', type: 'int', isPrimaryKey: true, isForeignKey: false, isUnique: false, isNullable: false }],
+          attributes: [
+            {
+              id: 'a2',
+              name: 'id',
+              type: 'int',
+              isPrimaryKey: true,
+              isForeignKey: false,
+              isUnique: false,
+              isNullable: false,
+            },
+          ],
           position: { x: 0, y: 0 },
         },
         {
           id: '2',
           name: 'MANGO',
-          attributes: [{ id: 'a3', name: 'id', type: 'int', isPrimaryKey: true, isForeignKey: false, isUnique: false, isNullable: false }],
+          attributes: [
+            {
+              id: 'a3',
+              name: 'id',
+              type: 'int',
+              isPrimaryKey: true,
+              isForeignKey: false,
+              isUnique: false,
+              isNullable: false,
+            },
+          ],
           position: { x: 0, y: 0 },
         },
       ],

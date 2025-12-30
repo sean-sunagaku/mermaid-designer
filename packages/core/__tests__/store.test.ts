@@ -71,7 +71,9 @@ describe('useERStore', () => {
       useERStore.getState().addAttribute(entityId, { name: 'old_name' });
 
       const attrId = useERStore.getState().entities[0].attributes[0].id;
-      useERStore.getState().updateAttribute(entityId, attrId, { name: 'new_name' });
+      useERStore
+        .getState()
+        .updateAttribute(entityId, attrId, { name: 'new_name' });
 
       const state = useERStore.getState();
       expect(state.entities[0].attributes[0].name).toBe('new_name');
@@ -178,7 +180,11 @@ describe('useERStore', () => {
   describe('Code synchronization', () => {
     it('should sync changes to code', () => {
       const entityId = useERStore.getState().addEntity({ name: 'TestEntity' });
-      useERStore.getState().addAttribute(entityId, { name: 'id', type: 'int', isPrimaryKey: true });
+      useERStore.getState().addAttribute(entityId, {
+        name: 'id',
+        type: 'int',
+        isPrimaryKey: true,
+      });
 
       const state = useERStore.getState();
       expect(state.mermaidCode).toContain('erDiagram');
@@ -203,7 +209,9 @@ erDiagram
 
     it('should preserve positions when updating from code', () => {
       useERStore.getState().addEntity({ name: 'CUSTOMER' });
-      useERStore.getState().moveEntity(useERStore.getState().entities[0].id, { x: 500, y: 300 });
+      useERStore
+        .getState()
+        .moveEntity(useERStore.getState().entities[0].id, { x: 500, y: 300 });
 
       const code = `
 erDiagram

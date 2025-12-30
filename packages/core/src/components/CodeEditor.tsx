@@ -73,8 +73,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ className = '' }) => {
       {parseErrors.length > 0 && (
         <div className="code-editor__errors px-3 py-2 bg-red-900/50 border-t border-red-800">
           {parseErrors.map((error, index) => (
-            <div key={index} className="code-editor__error text-red-400 text-xs">
-              {t('codeEditor.lineError', { line: error.line, message: error.message })}
+            <div
+              key={index}
+              className="code-editor__error text-red-400 text-xs"
+            >
+              {t('codeEditor.lineError', {
+                line: error.line,
+                message: error.message,
+              })}
             </div>
           ))}
         </div>

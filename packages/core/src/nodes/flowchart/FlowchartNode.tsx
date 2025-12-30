@@ -1,6 +1,9 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
-import type { FlowchartNodeData, FlowchartNodeShape } from '../../types/flowchart';
+import type {
+  FlowchartNodeData,
+  FlowchartNodeShape,
+} from '../../types/flowchart';
 
 /** 形状に応じたスタイルクラスを取得 */
 const getShapeStyles = (
@@ -89,20 +92,31 @@ const getShapeStyles = (
 };
 
 /** 形状に応じた色を取得 */
-const getShapeColor = (shape: FlowchartNodeShape, selected: boolean): string => {
+const getShapeColor = (
+  shape: FlowchartNodeShape,
+  selected: boolean
+): string => {
   const selectedBorder = 'border-blue-500 shadow-lg';
   const defaultBorder = 'border-slate-300';
 
   switch (shape) {
     case 'rhombus':
-      return selected ? `${selectedBorder} bg-yellow-50` : `${defaultBorder} bg-yellow-50`;
+      return selected
+        ? `${selectedBorder} bg-yellow-50`
+        : `${defaultBorder} bg-yellow-50`;
     case 'stadium':
-      return selected ? `${selectedBorder} bg-green-50` : `${defaultBorder} bg-green-50`;
+      return selected
+        ? `${selectedBorder} bg-green-50`
+        : `${defaultBorder} bg-green-50`;
     case 'circle':
     case 'double-circle':
-      return selected ? `${selectedBorder} bg-purple-50` : `${defaultBorder} bg-purple-50`;
+      return selected
+        ? `${selectedBorder} bg-purple-50`
+        : `${defaultBorder} bg-purple-50`;
     case 'cylinder':
-      return selected ? `${selectedBorder} bg-blue-50` : `${defaultBorder} bg-blue-50`;
+      return selected
+        ? `${selectedBorder} bg-blue-50`
+        : `${defaultBorder} bg-blue-50`;
     default:
       return selected ? selectedBorder : defaultBorder;
   }
@@ -153,7 +167,11 @@ export const FlowchartNode = memo(
             position={Position.Bottom}
             id="bottom"
             className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
-            style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}
+            style={{
+              bottom: 0,
+              left: '50%',
+              transform: 'translate(-50%, 50%)',
+            }}
           />
           <Handle
             type="source"

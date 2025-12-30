@@ -95,7 +95,8 @@ export class Parser {
         },
       };
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown parse error';
+      const message =
+        error instanceof Error ? error.message : 'Unknown parse error';
       this.errors.push({
         line: this.currentToken()?.line ?? 1,
         column: this.currentToken()?.column ?? 1,
@@ -155,7 +156,10 @@ export class Parser {
     this.skipNewlines();
 
     // erDiagram キーワードを探す
-    if (this.check(TokenType.KEYWORD) && this.currentToken()?.value === 'erDiagram') {
+    if (
+      this.check(TokenType.KEYWORD) &&
+      this.currentToken()?.value === 'erDiagram'
+    ) {
       this.advance();
       this.skipNewlines();
     }
@@ -213,7 +217,10 @@ export class Parser {
       this.skipNewlines();
     }
 
-    this.expect(TokenType.CLOSE_BRACE, `Expected '}' at end of entity definition`);
+    this.expect(
+      TokenType.CLOSE_BRACE,
+      `Expected '}' at end of entity definition`
+    );
   }
 
   private parseAttribute(): ERAttribute | null {
@@ -273,10 +280,12 @@ export class Parser {
   }
 
   private parseRelation(sourceEntity: string): void {
-    const relationToken = this.expect(TokenType.RELATION, 'Expected relation symbol');
-    const { sourceCardinality, targetCardinality, identifying } = parseRelationSymbol(
-      relationToken.value
+    const relationToken = this.expect(
+      TokenType.RELATION,
+      'Expected relation symbol'
     );
+    const { sourceCardinality, targetCardinality, identifying } =
+      parseRelationSymbol(relationToken.value);
 
     this.skipNewlines();
 

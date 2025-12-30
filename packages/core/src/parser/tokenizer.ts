@@ -206,7 +206,10 @@ export class Tokenizer {
     };
   }
 
-  private tryReadRelation(startLine: number, startColumn: number): Token | null {
+  private tryReadRelation(
+    startLine: number,
+    startColumn: number
+  ): Token | null {
     // リレーションパターンを探す
     // 形式: [左カーディナリティ][線][右カーディナリティ]
     // 例: ||--o{, }|..|{, |o--||

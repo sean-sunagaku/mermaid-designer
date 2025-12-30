@@ -28,7 +28,9 @@ export const FlowchartEdgePanel = () => {
 
       {/* リンクタイプ */}
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-600">リンクタイプ</label>
+        <label className="text-xs font-medium text-slate-600">
+          リンクタイプ
+        </label>
         <select
           value={selectedEdge.linkType}
           onChange={(e) =>

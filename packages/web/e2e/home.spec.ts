@@ -14,7 +14,9 @@ test.describe('ホームページ', () => {
     await expect(newButton).toBeVisible();
   });
 
-  test('新規作成ボタンをクリックするとエディターページに遷移する', async ({ page }) => {
+  test('新規作成ボタンをクリックするとエディターページに遷移する', async ({
+    page,
+  }) => {
     const newButton = page.locator('a[href="/editor"]');
     await newButton.click();
     await expect(page).toHaveURL(/\/editor/);

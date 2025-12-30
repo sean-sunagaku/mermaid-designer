@@ -11,8 +11,13 @@ interface EntityPanelProps {
 
 export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
   const { t } = useTranslation();
-  const { updateEntity, addAttribute, updateAttribute, deleteAttribute, deleteEntity } =
-    useERStore();
+  const {
+    updateEntity,
+    addAttribute,
+    updateAttribute,
+    deleteAttribute,
+    deleteEntity,
+  } = useERStore();
 
   const handleNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,13 +71,17 @@ export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
               key={attr.id}
               attribute={attr}
               entityId={entity.id}
-              onUpdate={(updates) => updateAttribute(entity.id, attr.id, updates)}
+              onUpdate={(updates) =>
+                updateAttribute(entity.id, attr.id, updates)
+              }
               onDelete={() => deleteAttribute(entity.id, attr.id)}
             />
           ))}
 
           {entity.attributes.length === 0 && (
-            <p className="text-sm text-slate-400 italic">{t('entityPanel.noAttributes')}</p>
+            <p className="text-sm text-slate-400 italic">
+              {t('entityPanel.noAttributes')}
+            </p>
           )}
         </div>
       </div>
@@ -97,10 +106,18 @@ interface AttributeRowProps {
   onDelete: () => void;
 }
 
-const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDelete }) => {
+const AttributeRow: React.FC<AttributeRowProps> = ({
+  attribute,
+  onUpdate,
+  onDelete,
+}) => {
   const { t } = useTranslation();
-  const isCommonType = COMMON_ATTRIBUTE_TYPES.includes(attribute.type as typeof COMMON_ATTRIBUTE_TYPES[number]);
-  const [isCustomMode, setIsCustomMode] = useState(!isCommonType && attribute.type !== '');
+  const isCommonType = COMMON_ATTRIBUTE_TYPES.includes(
+    attribute.type as (typeof COMMON_ATTRIBUTE_TYPES)[number]
+  );
+  const [isCustomMode, setIsCustomMode] = useState(
+    !isCommonType && attribute.type !== ''
+  );
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -160,7 +177,9 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
                 {type}
               </option>
             ))}
-            <option value={CUSTOM_TYPE_VALUE}>{t('entityPanel.customType')}</option>
+            <option value={CUSTOM_TYPE_VALUE}>
+              {t('entityPanel.customType')}
+            </option>
           </select>
         )}
       </div>

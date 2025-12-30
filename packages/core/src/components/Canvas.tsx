@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useEffect, useState, useRef } from 'react';
+import React, {
+  useCallback,
+  useMemo,
+  useEffect,
+  useState,
+  useRef,
+} from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -70,7 +76,11 @@ export const Canvas: React.FC = () => {
       }
 
       // Ctrl/Cmd + Z: Undo
-      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key === 'z' &&
+        !event.shiftKey
+      ) {
         if (canUndo()) {
           undo();
           event.preventDefault();
@@ -79,7 +89,10 @@ export const Canvas: React.FC = () => {
       }
 
       // Ctrl/Cmd + Shift + Z または Ctrl/Cmd + Y: Redo
-      if ((event.ctrlKey || event.metaKey) && (event.key === 'y' || (event.key === 'z' && event.shiftKey))) {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        (event.key === 'y' || (event.key === 'z' && event.shiftKey))
+      ) {
         if (canRedo()) {
           redo();
           event.preventDefault();
@@ -101,7 +114,18 @@ export const Canvas: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedEntityId, selectedRelationId, addEntity, deleteEntity, deleteRelation, selectEntity, undo, redo, canUndo, canRedo]);
+  }, [
+    selectedEntityId,
+    selectedRelationId,
+    addEntity,
+    deleteEntity,
+    deleteRelation,
+    selectEntity,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  ]);
 
   // 新規作成フラグをクリア
   const handleClearNewlyCreated = useCallback(() => {
@@ -166,8 +190,10 @@ export const Canvas: React.FC = () => {
         // 同じエンティティ間に既に接続がある場合は追加しない
         const existingRelation = relations.find(
           (r) =>
-            (r.sourceEntityId === connection.source && r.targetEntityId === connection.target) ||
-            (r.sourceEntityId === connection.target && r.targetEntityId === connection.source)
+            (r.sourceEntityId === connection.source &&
+              r.targetEntityId === connection.target) ||
+            (r.sourceEntityId === connection.target &&
+              r.targetEntityId === connection.source)
         );
         if (existingRelation) {
           return; // 既に接続済み

@@ -77,7 +77,9 @@ test.describe('エンティティ操作', () => {
     await page.waitForTimeout(300);
 
     // 属性名を入力
-    const attrNameInput = page.locator('.side-panel input[placeholder="name"]').first();
+    const attrNameInput = page
+      .locator('.side-panel input[placeholder="name"]')
+      .first();
     await attrNameInput.fill('id');
     await attrNameInput.press('Tab');
 

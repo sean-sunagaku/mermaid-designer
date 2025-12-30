@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "description": "Mermaid ER Diagram Visual Editor - VSCode Extension & Web Application",
-  "keywords": ["mermaid", "er-diagram", "editor", "vscode", "react"],
+  "keywords": [
+    "mermaid",
+    "er-diagram",
+    "editor",
+    "vscode",
+    "react"
+  ],
   "license": "MIT",
   "author": "sunagaku",
   "workspaces": [
@@ -14,10 +20,14 @@
     "build": "npm run build --workspaces --if-present",
     "build:core": "npm run build --workspace=@mermaid-er-editor/core",
     "build:web": "npm run build --workspace=@mermaid-er-editor/web",
+    "build:vscode": "npm run build --workspace=mermaid-er-editor",
+    "package:vscode": "npm run build:core && cd packages/vscode && npx @vscode/vsce package --no-dependencies",
     "test": "npm run test --workspaces --if-present",
     "test:watch": "npm run test:watch --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "fmt": "npm run format",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist"
   },

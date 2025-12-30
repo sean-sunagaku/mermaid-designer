@@ -7,23 +7,25 @@ export function activate(context: vscode.ExtensionContext) {
 
   // コマンドを登録
   context.subscriptions.push(
-    vscode.commands.registerCommand('mermaid-er-editor.newDiagram', async () => {
-      const workspaceFolders = vscode.workspace.workspaceFolders;
-      if (!workspaceFolders) {
-        vscode.window.showErrorMessage('Please open a workspace first');
-        return;
-      }
+    vscode.commands.registerCommand(
+      'mermaid-er-editor.newDiagram',
+      async () => {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders) {
+          vscode.window.showErrorMessage('Please open a workspace first');
+          return;
+        }
 
-      const fileName = await vscode.window.showInputBox({
-        prompt: 'Enter the file name for the new ER diagram',
-        value: 'diagram.er.md',
-      });
+        const fileName = await vscode.window.showInputBox({
+          prompt: 'Enter the file name for the new ER diagram',
+          value: 'diagram.er.md',
+        });
 
-      if (!fileName) return;
+        if (!fileName) return;
 
-      const filePath = vscode.Uri.joinPath(workspaceFolders[0].uri, fileName);
+        const filePath = vscode.Uri.joinPath(workspaceFolders[0].uri, fileName);
 
-      const defaultContent = `erDiagram
+        const defaultContent = `erDiagram
     %% Create your ER diagram here
     ENTITY_NAME {
         int id PK
@@ -31,9 +33,17 @@ export function activate(context: vscode.ExtensionContext) {
     }
 `;
 
-      await vscode.workspace.fs.writeFile(filePath, Buffer.from(defaultContent, 'utf-8'));
-      await vscode.commands.executeCommand('vscode.openWith', filePath, 'mermaid-er-editor.erDiagram');
-    })
+        await vscode.workspace.fs.writeFile(
+          filePath,
+          Buffer.from(defaultContent, 'utf-8')
+        );
+        await vscode.commands.executeCommand(
+          'vscode.openWith',
+          filePath,
+          'mermaid-er-editor.erDiagram'
+        );
+      }
+    )
   );
 }
 

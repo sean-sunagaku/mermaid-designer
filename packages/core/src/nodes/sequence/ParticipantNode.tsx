@@ -19,41 +19,33 @@ export const ParticipantNode = memo(
             {/* 頭 */}
             <div
               className={`w-8 h-8 rounded-full border-2 ${
-                selected ? 'border-blue-500 bg-blue-50' : 'border-slate-400 bg-white'
+                selected
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-slate-400 bg-white'
               }`}
             />
             {/* 体 */}
             <div
-              className={`w-0.5 h-6 ${
-                selected ? 'bg-blue-500' : 'bg-slate-400'
-              }`}
+              className={`w-0.5 h-6 ${selected ? 'bg-blue-500' : 'bg-slate-400'}`}
             />
             {/* 腕 */}
             <div
-              className={`w-8 h-0.5 -mt-4 ${
-                selected ? 'bg-blue-500' : 'bg-slate-400'
-              }`}
+              className={`w-8 h-0.5 -mt-4 ${selected ? 'bg-blue-500' : 'bg-slate-400'}`}
             />
             {/* 足 */}
             <div className="flex gap-2 mt-2">
               <div
-                className={`w-0.5 h-6 -rotate-12 ${
-                  selected ? 'bg-blue-500' : 'bg-slate-400'
-                }`}
+                className={`w-0.5 h-6 -rotate-12 ${selected ? 'bg-blue-500' : 'bg-slate-400'}`}
               />
               <div
-                className={`w-0.5 h-6 rotate-12 ${
-                  selected ? 'bg-blue-500' : 'bg-slate-400'
-                }`}
+                className={`w-0.5 h-6 rotate-12 ${selected ? 'bg-blue-500' : 'bg-slate-400'}`}
               />
             </div>
           </div>
         ) : (
           <div
             className={`px-4 py-2 rounded-md border-2 bg-white shadow-sm ${
-              selected
-                ? 'border-blue-500 shadow-lg'
-                : 'border-slate-300'
+              selected ? 'border-blue-500 shadow-lg' : 'border-slate-300'
             }`}
           >
             <span className="text-sm font-medium text-slate-700">

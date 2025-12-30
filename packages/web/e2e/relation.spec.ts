@@ -37,7 +37,9 @@ test.describe('リレーション操作', () => {
     await expect(edges.first()).toBeVisible();
   });
 
-  test('リレーションを選択するとサイドパネルにリレーション編集UIが表示される', async ({ page }) => {
+  test('リレーションを選択するとサイドパネルにリレーション編集UIが表示される', async ({
+    page,
+  }) => {
     // コードエディターでリレーションを含むコードを入力
     const codeEditor = page.locator('.code-editor__textarea');
     await codeEditor.fill(`erDiagram

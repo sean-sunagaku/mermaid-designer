@@ -80,11 +80,18 @@ export const Toolbar: React.FC = () => {
         </button>
         {showShortcuts && (
           <div className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg p-3 z-50 min-w-[200px]">
-            <div className="text-xs font-medium text-slate-500 mb-2">キーボードショートカット</div>
+            <div className="text-xs font-medium text-slate-500 mb-2">
+              キーボードショートカット
+            </div>
             {SHORTCUTS.map((s, i) => (
-              <div key={i} className="flex justify-between items-center py-1 text-sm">
+              <div
+                key={i}
+                className="flex justify-between items-center py-1 text-sm"
+              >
                 <span className="text-slate-600">{s.action}</span>
-                <kbd className="px-1.5 py-0.5 bg-slate-100 rounded text-xs font-mono text-slate-700">{s.key}</kbd>
+                <kbd className="px-1.5 py-0.5 bg-slate-100 rounded text-xs font-mono text-slate-700">
+                  {s.key}
+                </kbd>
               </div>
             ))}
           </div>

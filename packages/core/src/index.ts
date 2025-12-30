@@ -15,7 +15,11 @@ export {
 } from './parser';
 
 // Generator
-export { generateERDiagram, generateFlowchart, generateSequenceDiagram } from './generator';
+export {
+  generateERDiagram,
+  generateFlowchart,
+  generateSequenceDiagram,
+} from './generator';
 
 // Store
 export {
@@ -66,7 +70,11 @@ export { RelationEdge, FlowEdge, MessageEdge } from './edges';
 export { EntityPanel, RelationPanel, SidePanel } from './panels';
 
 // Panels - Flowchart
-export { FlowchartNodePanel, FlowchartEdgePanel, FlowchartSidePanel } from './panels';
+export {
+  FlowchartNodePanel,
+  FlowchartEdgePanel,
+  FlowchartSidePanel,
+} from './panels';
 
 // Panels - Sequence
 export { ParticipantPanel, MessagePanel, SequenceSidePanel } from './panels';

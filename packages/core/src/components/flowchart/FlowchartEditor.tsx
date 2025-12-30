@@ -21,7 +21,9 @@ export const FlowchartEditor: React.FC<FlowchartEditorProps> = ({
 
   return (
     <ReactFlowProvider>
-      <div className={`flowchart-editor flex flex-col h-full bg-slate-50 ${className}`}>
+      <div
+        className={`flowchart-editor flex flex-col h-full bg-slate-50 ${className}`}
+      >
         {/* ツールバー */}
         <FlowchartToolbar />
 

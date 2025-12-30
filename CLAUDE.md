@@ -5,6 +5,7 @@ Kiro-style Spec Driven Development implementation using claude code slash comman
 ## Project Context
 
 ### Paths
+
 - Steering: `.kiro/steering/`
 - Specs: `.kiro/specs/`
 - Commands: `.claude/commands/`
@@ -15,30 +16,36 @@ Kiro-style Spec Driven Development implementation using claude code slash comman
 **Specs** (`.kiro/specs/`) - Formalize development process for individual features
 
 ### Active Specifications
+
 - Check `.kiro/specs/` for active specifications
 - Use `/kiro:spec-status [feature-name]` to check progress
 
 ## Development Guidelines
+
 - Think in English, but generate responses in Japanese (思考は英語、回答の生成は日本語で行うように)
 
 ## Workflow
 
 ### Phase 0: Steering (Optional)
+
 `/kiro:steering` - Create/update steering documents
 `/kiro:steering-custom` - Create custom steering for specialized contexts
 
 **Note**: Optional for new features or small additions. Can proceed directly to spec-init.
 
 ### Phase 1: Specification Creation
+
 1. `/kiro:spec-init [detailed description]` - Initialize spec with detailed project description
 2. `/kiro:spec-requirements [feature]` - Generate requirements document
 3. `/kiro:spec-design [feature]` - Interactive: "requirements.mdをレビューしましたか？ [y/N]"
 4. `/kiro:spec-tasks [feature]` - Interactive: Confirms both requirements and design review
 
 ### Phase 2: Progress Tracking
+
 `/kiro:spec-status [feature]` - Check current progress and phases
 
 ## Development Rules
+
 1. **Consider steering**: Run `/kiro:steering` before major development (optional for new features)
 2. **Follow 3-phase approval workflow**: Requirements → Design → Tasks → Implementation
 3. **Approval required**: Each phase requires human review (interactive prompt or manual)
@@ -50,22 +57,26 @@ Kiro-style Spec Driven Development implementation using claude code slash comman
 ## Steering Configuration
 
 ### Current Steering Files
+
 Managed by `/kiro:steering` command. Updates here reflect command changes.
 
 ### Active Steering Files
+
 - `product.md`: Always included - Product context and business objectives
 - `tech.md`: Always included - Technology stack and architectural decisions
 - `structure.md`: Always included - File organization and code patterns
 
 ### Custom Steering Files
+
 <!-- Added by /kiro:steering-custom command -->
-<!-- Format: 
+<!-- Format:
 - `filename.md`: Mode - Pattern(s) - Description
   Mode: Always|Conditional|Manual
   Pattern: File patterns for Conditional mode
 -->
 
 ### Inclusion Modes
+
 - **Always**: Loaded in every interaction (default)
 - **Conditional**: Loaded for specific file patterns (e.g., `"*.test.js"`)
 - **Manual**: Reference with `@filename.md` syntax
@@ -77,6 +88,7 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 ### 実装フェーズ
 
 #### Phase 1: 基盤構築
+
 1. **モノレポセットアップ**
    - pnpm workspace設定
    - 共通TypeScript設定（tsconfig.base.json）
@@ -97,6 +109,7 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
    - フォーマットオプション対応
 
 #### Phase 2: GUIコア
+
 1. **Zustandストア**（packages/core/src/store/）
    - ERStore: エンティティ/リレーション/選択状態管理
    - zundo でUndo/Redo対応
@@ -108,32 +121,38 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
    - RelationEdge: カーディナリティマーカー付き接続線
 
 #### Phase 3: プロパティパネル
+
 1. **EntityPanel**: エンティティ編集（名前、属性CRUD、並び替え）
 2. **RelationPanel**: リレーション編集（カーディナリティ、ラベル）
 3. **Toolbar**: 追加ボタン、Undo/Redo、エクスポート
 
 #### Phase 4: コードエディター & 同期
+
 1. **CodeEditor**: Mermaidコード編集UI
 2. **双方向同期**: GUI↔コードのリアルタイム同期（デバウンス付き）
 3. **エラー表示**: パースエラーの行ハイライト
 
 #### Phase 5: Webアプリケーション
+
 1. Vite + React Router設定
 2. ファイル読み込み/保存（File System Access API）
 3. PNG/SVGエクスポート
 4. ローカルストレージ保存
 
 #### Phase 6: VSCode拡張
+
 1. CustomTextEditorProvider実装
 2. Webview通信
-3. ファイル関連付け（*.er.md, *.erd.mmd）
+3. ファイル関連付け（_.er.md, _.erd.mmd）
 
 #### Phase 7: テスト
+
 1. Vitest: パーサー/ジェネレーター/ストアのユニットテスト
 2. Testing Library: コンポーネントテスト
 3. Playwright: E2Eテスト
 
 ### パッケージ構成
+
 ```
 packages/
 ├── core/     # 共通コア（型、パーサー、ストア、コンポーネント）
@@ -148,6 +167,7 @@ packages/
 ### 8.1 GitHub Pages デプロイ
 
 #### 目的
+
 - mainブランチへのpush時に自動でGitHub Pagesにデプロイ
 - 静的サイトとしてWebアプリケーションを公開
 
@@ -171,6 +191,7 @@ packages/
    - カスタムドメイン設定（オプション）
 
 #### ファイル構成
+
 ```
 .github/
 └── workflows/
@@ -181,6 +202,7 @@ packages/
 ### 8.2 E2E テスト（Playwright）
 
 #### 目的
+
 - ユーザーシナリオに基づいたエンドツーエンドテスト
 - 主要機能の自動検証
 
@@ -216,6 +238,7 @@ packages/
    - テスト失敗時はマージをブロック
 
 #### ファイル構成
+
 ```
 packages/web/
 ├── e2e/
@@ -269,16 +292,16 @@ npm run test:e2e --workspace=@mermaid-er-editor/web -- --project=chromium
 
 ### 個別コマンド
 
-| コマンド | 説明 |
-|---------|------|
-| `npm run lint` | ESLint を実行 |
-| `npm run test` | 全パッケージのユニットテストを実行 |
-| `npm run build` | 全パッケージをビルド |
-| `npm run build:core` | core パッケージのみビルド |
-| `npm run build:web` | web パッケージのみビルド |
-| `npm run dev` | 開発サーバーを起動（ポート1837） |
-| `npm run test:e2e --workspace=@mermaid-er-editor/web` | E2Eテストを実行 |
-| `npm run test:e2e --workspace=@mermaid-er-editor/web -- --project=chromium` | E2Eテスト（Chromiumのみ） |
+| コマンド                                                                    | 説明                               |
+| --------------------------------------------------------------------------- | ---------------------------------- |
+| `npm run lint`                                                              | ESLint を実行                      |
+| `npm run test`                                                              | 全パッケージのユニットテストを実行 |
+| `npm run build`                                                             | 全パッケージをビルド               |
+| `npm run build:core`                                                        | core パッケージのみビルド          |
+| `npm run build:web`                                                         | web パッケージのみビルド           |
+| `npm run dev`                                                               | 開発サーバーを起動（ポート1837）   |
+| `npm run test:e2e --workspace=@mermaid-er-editor/web`                       | E2Eテストを実行                    |
+| `npm run test:e2e --workspace=@mermaid-er-editor/web -- --project=chromium` | E2Eテスト（Chromiumのみ）          |
 
 ### E2Eテストの事前準備
 
@@ -303,6 +326,7 @@ npx playwright install chromium
 現在のER図エディターのアーキテクチャを拡張し、フローチャート（アクティビティ図）とシーケンス図のサポートを追加する。
 
 #### 目標
+
 - Mermaid Flowchart記法のビジュアル編集
 - Mermaid Sequence記法のビジュアル編集
 - 既存のER図エディターと同様のGUI操作（ドラッグ&ドロップ、プロパティパネル、コード同期）
@@ -310,6 +334,7 @@ npx playwright install chromium
 ### 9.2 Mermaid記法サポート範囲
 
 #### フローチャート記法
+
 ```mermaid
 flowchart TD
     A[開始] --> B{条件分岐}
@@ -320,6 +345,7 @@ flowchart TD
 ```
 
 **サポートするノード形状:**
+
 - `[テキスト]` - 四角形（プロセス）
 - `{テキスト}` - ひし形（条件分岐/デシジョン）
 - `([テキスト])` - スタジアム型（開始/終了）
@@ -329,6 +355,7 @@ flowchart TD
 - `{{テキスト}}` - 六角形
 
 **サポートする矢印:**
+
 - `-->` - 実線矢印
 - `---` - 実線
 - `-.->` - 点線矢印
@@ -336,12 +363,14 @@ flowchart TD
 - `-->|テキスト|` - ラベル付き矢印
 
 **サポートする方向:**
+
 - `TD`/`TB` - 上から下
 - `BT` - 下から上
 - `LR` - 左から右
 - `RL` - 右から左
 
 #### シーケンス図記法
+
 ```mermaid
 sequenceDiagram
     participant A as ユーザー
@@ -352,6 +381,7 @@ sequenceDiagram
 ```
 
 **サポートする要素:**
+
 - `participant` / `actor` - 参加者/アクター
 - `->>` - 同期メッセージ
 - `-->>` - 非同期メッセージ
@@ -363,7 +393,9 @@ sequenceDiagram
 ### 9.3 アーキテクチャ設計
 
 #### 共通パターン
+
 既存のER図エディターと同じパターンを踏襲:
+
 ```
 Mermaid Code → Tokenizer → Parser → AST
                                       ↓
@@ -379,6 +411,7 @@ Mermaid Code → Tokenizer → Parser → AST
 ```
 
 #### ファイル構成
+
 ```
 packages/core/src/
 ├── types/
@@ -476,106 +509,109 @@ packages/web/src/
 ### 9.4 型定義詳細
 
 #### flowchart.ts
+
 ```typescript
 // ノード形状
 export type FlowchartNodeShape =
-  | 'rectangle'      // [テキスト]
-  | 'diamond'        // {テキスト}
-  | 'stadium'        // ([テキスト])
-  | 'circle'         // ((テキスト))
-  | 'subroutine'     // [[テキスト]]
-  | 'cylinder'       // [(テキスト)]
-  | 'hexagon'        // {{テキスト}}
+  | 'rectangle' // [テキスト]
+  | 'diamond' // {テキスト}
+  | 'stadium' // ([テキスト])
+  | 'circle' // ((テキスト))
+  | 'subroutine' // [[テキスト]]
+  | 'cylinder' // [(テキスト)]
+  | 'hexagon'; // {{テキスト}}
 
 // 矢印タイプ
 export type FlowchartArrowType =
-  | 'arrow'          // -->
-  | 'line'           // ---
-  | 'dotted-arrow'   // -.->
-  | 'thick-arrow'    // ==>
+  | 'arrow' // -->
+  | 'line' // ---
+  | 'dotted-arrow' // -.->
+  | 'thick-arrow'; // ==>
 
 // 方向
-export type FlowchartDirection = 'TD' | 'TB' | 'BT' | 'LR' | 'RL'
+export type FlowchartDirection = 'TD' | 'TB' | 'BT' | 'LR' | 'RL';
 
 // ノード
 export interface FlowchartNode {
-  id: string
-  label: string
-  shape: FlowchartNodeShape
-  position: Position
+  id: string;
+  label: string;
+  shape: FlowchartNodeShape;
+  position: Position;
 }
 
 // エッジ
 export interface FlowchartEdge {
-  id: string
-  sourceId: string
-  targetId: string
-  arrowType: FlowchartArrowType
-  label?: string
-  sourceHandle?: string
-  targetHandle?: string
+  id: string;
+  sourceId: string;
+  targetId: string;
+  arrowType: FlowchartArrowType;
+  label?: string;
+  sourceHandle?: string;
+  targetHandle?: string;
 }
 
 // ダイアグラム
 export interface FlowchartDiagram {
-  direction: FlowchartDirection
-  nodes: FlowchartNode[]
-  edges: FlowchartEdge[]
+  direction: FlowchartDirection;
+  nodes: FlowchartNode[];
+  edges: FlowchartEdge[];
 }
 ```
 
 #### sequence.ts
+
 ```typescript
 // 参加者タイプ
-export type ParticipantType = 'participant' | 'actor'
+export type ParticipantType = 'participant' | 'actor';
 
 // メッセージタイプ
 export type MessageType =
-  | 'sync'        // ->>
-  | 'async'       // -->>
-  | 'solid'       // ->
-  | 'dotted'      // -->
-  | 'cross'       // -x
+  | 'sync' // ->>
+  | 'async' // -->>
+  | 'solid' // ->
+  | 'dotted' // -->
+  | 'cross'; // -x
 
 // 参加者
 export interface SequenceParticipant {
-  id: string
-  type: ParticipantType
-  name: string
-  alias?: string
-  order: number
+  id: string;
+  type: ParticipantType;
+  name: string;
+  alias?: string;
+  order: number;
 }
 
 // メッセージ
 export interface SequenceMessage {
-  id: string
-  sourceId: string
-  targetId: string
-  type: MessageType
-  label: string
-  order: number
+  id: string;
+  sourceId: string;
+  targetId: string;
+  type: MessageType;
+  label: string;
+  order: number;
 }
 
 // ノート
 export interface SequenceNote {
-  id: string
-  text: string
-  position: 'over' | 'left' | 'right'
-  participantIds: string[]
-  order: number
+  id: string;
+  text: string;
+  position: 'over' | 'left' | 'right';
+  participantIds: string[];
+  order: number;
 }
 
 // ダイアグラム
 export interface SequenceDiagram {
-  participants: SequenceParticipant[]
-  messages: SequenceMessage[]
-  notes: SequenceNote[]
+  participants: SequenceParticipant[];
+  messages: SequenceMessage[];
+  notes: SequenceNote[];
 }
 ```
 
 ### 9.5 実装順序
 
 #### Phase 9-A: フローチャートサポート
+
 1. **型定義** (`flowchart.ts`)
 2. **パーサー** (`flowchartParser.ts`)
 3. **ジェネレーター** (`flowchartGenerator.ts`)
@@ -587,6 +623,7 @@ export interface SequenceDiagram {
 9. **ユニットテスト**
 
 #### Phase 9-B: シーケンス図サポート
+
 1. **型定義** (`sequence.ts`)
 2. **パーサー** (`sequenceParser.ts`)
 3. **ジェネレーター** (`sequenceGenerator.ts`)
@@ -598,6 +635,7 @@ export interface SequenceDiagram {
 9. **ユニットテスト**
 
 #### Phase 9-C: 統合
+
 1. **Webアプリ更新** (ホームページ、ルーティング)
 2. **i18n対応** (翻訳キー追加)
 3. **E2Eテスト追加**
@@ -606,15 +644,18 @@ export interface SequenceDiagram {
 ### 9.6 UI/UX設計
 
 #### ホームページ更新
+
 - 図タイプ選択カード（ER図、フローチャート、シーケンス図）
 - 各タイプの説明とアイコン
 
 #### フローチャートエディター
+
 - ツールバー: ノード形状選択、方向切り替え、Undo/Redo
 - キャンバス: ドラッグ&ドロップでノード配置、接続
 - サイドパネル: 選択ノード/エッジのプロパティ編集
 
 #### シーケンス図エディター
+
 - ツールバー: 参加者追加、メッセージ追加、Undo/Redo
 - キャンバス: タイムライン形式で表示
 - サイドパネル: 選択要素のプロパティ編集

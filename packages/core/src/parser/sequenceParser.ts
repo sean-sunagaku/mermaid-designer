@@ -205,16 +205,17 @@ class SequenceTokenizer {
     const remaining = this.input.slice(this.pos);
 
     // メッセージ矢印パターン（長いものから順に）
-    const arrowPatterns: Array<{ pattern: string; type: SequenceMessageType }> = [
-      { pattern: '-->>', type: 'dotted-arrow' },
-      { pattern: '--)', type: 'dotted-open' },
-      { pattern: '--x', type: 'dotted-cross' },
-      { pattern: '->>', type: 'solid-arrow' },
-      { pattern: '-)', type: 'solid-open' },
-      { pattern: '-x', type: 'solid-cross' },
-      { pattern: '-->', type: 'dotted' },
-      { pattern: '->', type: 'solid' },
-    ];
+    const arrowPatterns: Array<{ pattern: string; type: SequenceMessageType }> =
+      [
+        { pattern: '-->>', type: 'dotted-arrow' },
+        { pattern: '--)', type: 'dotted-open' },
+        { pattern: '--x', type: 'dotted-cross' },
+        { pattern: '->>', type: 'solid-arrow' },
+        { pattern: '-)', type: 'solid-open' },
+        { pattern: '-x', type: 'solid-cross' },
+        { pattern: '-->', type: 'dotted' },
+        { pattern: '->', type: 'solid' },
+      ];
 
     for (const { pattern, type } of arrowPatterns) {
       if (remaining.startsWith(pattern)) {
@@ -675,7 +676,10 @@ export class SequenceParser {
       if (this.check(SequenceTokenType.ELSE) && depth === 1) {
         // 現在の条件を保存
         conditions.push({
-          label: firstLabel.trim() || conditions.length === 0 ? firstLabel.trim() : '',
+          label:
+            firstLabel.trim() || conditions.length === 0
+              ? firstLabel.trim()
+              : '',
           startOrder: currentStartOrder,
           endOrder: this.orderCounter,
         });

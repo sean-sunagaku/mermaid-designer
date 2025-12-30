@@ -31,9 +31,17 @@ export interface ERActions {
 
   // 属性操作
   addAttribute: (entityId: string, attribute?: Partial<ERAttribute>) => void;
-  updateAttribute: (entityId: string, attrId: string, updates: Partial<ERAttribute>) => void;
+  updateAttribute: (
+    entityId: string,
+    attrId: string,
+    updates: Partial<ERAttribute>
+  ) => void;
   deleteAttribute: (entityId: string, attrId: string) => void;
-  reorderAttributes: (entityId: string, fromIndex: number, toIndex: number) => void;
+  reorderAttributes: (
+    entityId: string,
+    fromIndex: number,
+    toIndex: number
+  ) => void;
 
   // リレーション操作
   addRelation: (relation: Partial<ERRelation>) => string;
@@ -94,7 +102,9 @@ export const useERStore = create<ERStore>()(
 
       updateEntity: (id: string, updates: Partial<EREntity>) => {
         set((state) => ({
-          entities: state.entities.map((e) => (e.id === id ? { ...e, ...updates } : e)),
+          entities: state.entities.map((e) =>
+            e.id === id ? { ...e, ...updates } : e
+          ),
           isDirty: true,
         }));
         get().syncToCode();
@@ -106,7 +116,8 @@ export const useERStore = create<ERStore>()(
           relations: state.relations.filter(
             (r) => r.sourceEntityId !== id && r.targetEntityId !== id
           ),
-          selectedEntityId: state.selectedEntityId === id ? null : state.selectedEntityId,
+          selectedEntityId:
+            state.selectedEntityId === id ? null : state.selectedEntityId,
           isDirty: true,
         }));
         get().syncToCode();
@@ -114,7 +125,9 @@ export const useERStore = create<ERStore>()(
 
       moveEntity: (id: string, position: Position) => {
         set((state) => ({
-          entities: state.entities.map((e) => (e.id === id ? { ...e, position } : e)),
+          entities: state.entities.map((e) =>
+            e.id === id ? { ...e, position } : e
+          ),
         }));
         // 位置変更はコードに反映しない（Mermaidは位置情報を持たない）
       },
@@ -134,20 +147,28 @@ export const useERStore = create<ERStore>()(
 
         set((state) => ({
           entities: state.entities.map((e) =>
-            e.id === entityId ? { ...e, attributes: [...e.attributes, newAttribute] } : e
+            e.id === entityId
+              ? { ...e, attributes: [...e.attributes, newAttribute] }
+              : e
           ),
           isDirty: true,
         }));
         get().syncToCode();
       },
 
-      updateAttribute: (entityId: string, attrId: string, updates: Partial<ERAttribute>) => {
+      updateAttribute: (
+        entityId: string,
+        attrId: string,
+        updates: Partial<ERAttribute>
+      ) => {
         set((state) => ({
           entities: state.entities.map((e) =>
             e.id === entityId
               ? {
                   ...e,
-                  attributes: e.attributes.map((a) => (a.id === attrId ? { ...a, ...updates } : a)),
+                  attributes: e.attributes.map((a) =>
+                    a.id === attrId ? { ...a, ...updates } : a
+                  ),
                 }
               : e
           ),
@@ -160,7 +181,10 @@ export const useERStore = create<ERStore>()(
         set((state) => ({
           entities: state.entities.map((e) =>
             e.id === entityId
-              ? { ...e, attributes: e.attributes.filter((a) => a.id !== attrId) }
+              ? {
+                  ...e,
+                  attributes: e.attributes.filter((a) => a.id !== attrId),
+                }
               : e
           ),
           isDirty: true,
@@ -168,7 +192,11 @@ export const useERStore = create<ERStore>()(
         get().syncToCode();
       },
 
-      reorderAttributes: (entityId: string, fromIndex: number, toIndex: number) => {
+      reorderAttributes: (
+        entityId: string,
+        fromIndex: number,
+        toIndex: number
+      ) => {
         set((state) => ({
           entities: state.entities.map((e) => {
             if (e.id !== entityId) return e;
@@ -207,7 +235,9 @@ export const useERStore = create<ERStore>()(
 
       updateRelation: (id: string, updates: Partial<ERRelation>) => {
         set((state) => ({
-          relations: state.relations.map((r) => (r.id === id ? { ...r, ...updates } : r)),
+          relations: state.relations.map((r) =>
+            r.id === id ? { ...r, ...updates } : r
+          ),
           isDirty: true,
         }));
         get().syncToCode();
@@ -216,7 +246,8 @@ export const useERStore = create<ERStore>()(
       deleteRelation: (id: string) => {
         set((state) => ({
           relations: state.relations.filter((r) => r.id !== id),
-          selectedRelationId: state.selectedRelationId === id ? null : state.selectedRelationId,
+          selectedRelationId:
+            state.selectedRelationId === id ? null : state.selectedRelationId,
           isDirty: true,
         }));
         get().syncToCode();
@@ -310,8 +341,10 @@ export const useERStore = create<ERStore>()(
       equality: (pastState, currentState) => {
         // エンティティとリレーションが同じなら同一とみなす
         return (
-          JSON.stringify(pastState.entities) === JSON.stringify(currentState.entities) &&
-          JSON.stringify(pastState.relations) === JSON.stringify(currentState.relations)
+          JSON.stringify(pastState.entities) ===
+            JSON.stringify(currentState.entities) &&
+          JSON.stringify(pastState.relations) ===
+            JSON.stringify(currentState.relations)
         );
       },
     }
