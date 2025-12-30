@@ -293,3 +293,328 @@ npx playwright install chromium
 - **ポート**: 開発サーバーはポート `1837` を使用
 - **ビルド順序**: web パッケージは core パッケージに依存するため、先に core をビルドする必要がある
 - **CI環境**: CI では全ブラウザ（Chromium, Firefox, WebKit）でテストが実行される
+
+---
+
+## Phase 9: フローチャート & シーケンス図サポート - 実装計画
+
+### 9.1 概要
+
+現在のER図エディターのアーキテクチャを拡張し、フローチャート（アクティビティ図）とシーケンス図のサポートを追加する。
+
+#### 目標
+- Mermaid Flowchart記法のビジュアル編集
+- Mermaid Sequence記法のビジュアル編集
+- 既存のER図エディターと同様のGUI操作（ドラッグ&ドロップ、プロパティパネル、コード同期）
+
+### 9.2 Mermaid記法サポート範囲
+
+#### フローチャート記法
+```mermaid
+flowchart TD
+    A[開始] --> B{条件分岐}
+    B -->|Yes| C[処理1]
+    B -->|No| D[処理2]
+    C --> E[終了]
+    D --> E
+```
+
+**サポートするノード形状:**
+- `[テキスト]` - 四角形（プロセス）
+- `{テキスト}` - ひし形（条件分岐/デシジョン）
+- `([テキスト])` - スタジアム型（開始/終了）
+- `((テキスト))` - 円形
+- `[[テキスト]]` - サブルーチン
+- `[(テキスト)]` - シリンダー（データベース）
+- `{{テキスト}}` - 六角形
+
+**サポートする矢印:**
+- `-->` - 実線矢印
+- `---` - 実線
+- `-.->` - 点線矢印
+- `==>` - 太線矢印
+- `-->|テキスト|` - ラベル付き矢印
+
+**サポートする方向:**
+- `TD`/`TB` - 上から下
+- `BT` - 下から上
+- `LR` - 左から右
+- `RL` - 右から左
+
+#### シーケンス図記法
+```mermaid
+sequenceDiagram
+    participant A as ユーザー
+    participant B as システム
+    A->>B: リクエスト
+    B-->>A: レスポンス
+    Note over A,B: 処理完了
+```
+
+**サポートする要素:**
+- `participant` / `actor` - 参加者/アクター
+- `->>` - 同期メッセージ
+- `-->>` - 非同期メッセージ
+- `->` - 実線
+- `-->` - 点線
+- `-x` - 失敗メッセージ
+- `Note over/left of/right of` - ノート
+
+### 9.3 アーキテクチャ設計
+
+#### 共通パターン
+既存のER図エディターと同じパターンを踏襲:
+```
+Mermaid Code → Tokenizer → Parser → AST
+                                      ↓
+                                  Store (Zustand + Zundo)
+                                      ↓
+                                React Components
+                                      ↓
+                                 React Flow
+                                      ↓
+                                  Generator
+                                      ↓
+                                Mermaid Code
+```
+
+#### ファイル構成
+```
+packages/core/src/
+├── types/
+│   ├── ast.ts              # (既存) ERDiagram types
+│   ├── flowchart.ts        # 【新規】Flowchart types
+│   ├── sequence.ts         # 【新規】Sequence types
+│   └── index.ts            # 【更新】全型をエクスポート
+│
+├── parser/
+│   ├── tokenizer.ts        # (既存) ER tokenizer
+│   ├── parser.ts           # (既存) ER parser
+│   ├── flowchartParser.ts  # 【新規】Flowchart parser
+│   ├── sequenceParser.ts   # 【新規】Sequence parser
+│   └── index.ts            # 【更新】全パーサーをエクスポート
+│
+├── generator/
+│   ├── generator.ts            # (既存) ER generator
+│   ├── flowchartGenerator.ts   # 【新規】Flowchart generator
+│   ├── sequenceGenerator.ts    # 【新規】Sequence generator
+│   └── index.ts                # 【更新】全ジェネレーターをエクスポート
+│
+├── store/
+│   ├── erStore.ts              # (既存) ER store
+│   ├── flowchartStore.ts       # 【新規】Flowchart store
+│   ├── sequenceStore.ts        # 【新規】Sequence store
+│   └── index.ts                # 【更新】全ストアをエクスポート
+│
+├── nodes/
+│   ├── EntityNode.tsx          # (既存) ER entity node
+│   ├── flowchart/
+│   │   ├── ProcessNode.tsx     # 【新規】四角形ノード
+│   │   ├── DecisionNode.tsx    # 【新規】ひし形ノード
+│   │   ├── TerminalNode.tsx    # 【新規】開始/終了ノード
+│   │   └── index.ts
+│   ├── sequence/
+│   │   ├── ActorNode.tsx       # 【新規】アクターノード
+│   │   └── index.ts
+│   └── index.ts
+│
+├── edges/
+│   ├── RelationEdge.tsx        # (既存) ER relation edge
+│   ├── flowchart/
+│   │   ├── FlowEdge.tsx        # 【新規】フロー矢印
+│   │   └── index.ts
+│   ├── sequence/
+│   │   ├── MessageEdge.tsx     # 【新規】メッセージ矢印
+│   │   └── index.ts
+│   └── index.ts
+│
+├── panels/
+│   ├── EntityPanel.tsx         # (既存) ER entity panel
+│   ├── RelationPanel.tsx       # (既存) ER relation panel
+│   ├── SidePanel.tsx           # (既存) Side panel router
+│   ├── flowchart/
+│   │   ├── FlowchartNodePanel.tsx  # 【新規】ノード編集パネル
+│   │   ├── FlowchartEdgePanel.tsx  # 【新規】エッジ編集パネル
+│   │   ├── FlowchartSidePanel.tsx  # 【新規】サイドパネル
+│   │   └── index.ts
+│   ├── sequence/
+│   │   ├── ActorPanel.tsx          # 【新規】アクター編集パネル
+│   │   ├── MessagePanel.tsx        # 【新規】メッセージ編集パネル
+│   │   ├── SequenceSidePanel.tsx   # 【新規】サイドパネル
+│   │   └── index.ts
+│   └── index.ts
+│
+├── components/
+│   ├── EREditor.tsx            # (既存) ER editor
+│   ├── Canvas.tsx              # (既存) ER canvas
+│   ├── CodeEditor.tsx          # (既存) Code editor
+│   ├── Toolbar.tsx             # (既存) Toolbar
+│   ├── flowchart/
+│   │   ├── FlowchartEditor.tsx     # 【新規】Flowchart editor
+│   │   ├── FlowchartCanvas.tsx     # 【新規】Flowchart canvas
+│   │   ├── FlowchartToolbar.tsx    # 【新規】Flowchart toolbar
+│   │   └── index.ts
+│   ├── sequence/
+│   │   ├── SequenceEditor.tsx      # 【新規】Sequence editor
+│   │   ├── SequenceCanvas.tsx      # 【新規】Sequence canvas
+│   │   ├── SequenceToolbar.tsx     # 【新規】Sequence toolbar
+│   │   └── index.ts
+│   └── index.ts
+│
+└── index.ts                    # 【更新】全コンポーネントをエクスポート
+
+packages/web/src/
+├── pages/
+│   ├── Home.tsx                # 【更新】図タイプ選択を追加
+│   ├── EREditorPage.tsx        # (既存) ER editor page
+│   ├── FlowchartEditorPage.tsx # 【新規】Flowchart editor page
+│   ├── SequenceEditorPage.tsx  # 【新規】Sequence editor page
+│   └── index.ts
+└── App.tsx                     # 【更新】ルーティング追加
+```
+
+### 9.4 型定義詳細
+
+#### flowchart.ts
+```typescript
+// ノード形状
+export type FlowchartNodeShape =
+  | 'rectangle'      // [テキスト]
+  | 'diamond'        // {テキスト}
+  | 'stadium'        // ([テキスト])
+  | 'circle'         // ((テキスト))
+  | 'subroutine'     // [[テキスト]]
+  | 'cylinder'       // [(テキスト)]
+  | 'hexagon'        // {{テキスト}}
+
+// 矢印タイプ
+export type FlowchartArrowType =
+  | 'arrow'          // -->
+  | 'line'           // ---
+  | 'dotted-arrow'   // -.->
+  | 'thick-arrow'    // ==>
+
+// 方向
+export type FlowchartDirection = 'TD' | 'TB' | 'BT' | 'LR' | 'RL'
+
+// ノード
+export interface FlowchartNode {
+  id: string
+  label: string
+  shape: FlowchartNodeShape
+  position: Position
+}
+
+// エッジ
+export interface FlowchartEdge {
+  id: string
+  sourceId: string
+  targetId: string
+  arrowType: FlowchartArrowType
+  label?: string
+  sourceHandle?: string
+  targetHandle?: string
+}
+
+// ダイアグラム
+export interface FlowchartDiagram {
+  direction: FlowchartDirection
+  nodes: FlowchartNode[]
+  edges: FlowchartEdge[]
+}
+```
+
+#### sequence.ts
+```typescript
+// 参加者タイプ
+export type ParticipantType = 'participant' | 'actor'
+
+// メッセージタイプ
+export type MessageType =
+  | 'sync'        // ->>
+  | 'async'       // -->>
+  | 'solid'       // ->
+  | 'dotted'      // -->
+  | 'cross'       // -x
+
+// 参加者
+export interface SequenceParticipant {
+  id: string
+  type: ParticipantType
+  name: string
+  alias?: string
+  order: number
+}
+
+// メッセージ
+export interface SequenceMessage {
+  id: string
+  sourceId: string
+  targetId: string
+  type: MessageType
+  label: string
+  order: number
+}
+
+// ノート
+export interface SequenceNote {
+  id: string
+  text: string
+  position: 'over' | 'left' | 'right'
+  participantIds: string[]
+  order: number
+}
+
+// ダイアグラム
+export interface SequenceDiagram {
+  participants: SequenceParticipant[]
+  messages: SequenceMessage[]
+  notes: SequenceNote[]
+}
+```
+
+### 9.5 実装順序
+
+#### Phase 9-A: フローチャートサポート
+1. **型定義** (`flowchart.ts`)
+2. **パーサー** (`flowchartParser.ts`)
+3. **ジェネレーター** (`flowchartGenerator.ts`)
+4. **ストア** (`flowchartStore.ts`)
+5. **カスタムノード** (`ProcessNode`, `DecisionNode`, `TerminalNode`)
+6. **カスタムエッジ** (`FlowEdge`)
+7. **パネル** (`FlowchartNodePanel`, `FlowchartEdgePanel`, `FlowchartSidePanel`)
+8. **エディターコンポーネント** (`FlowchartEditor`, `FlowchartCanvas`, `FlowchartToolbar`)
+9. **ユニットテスト**
+
+#### Phase 9-B: シーケンス図サポート
+1. **型定義** (`sequence.ts`)
+2. **パーサー** (`sequenceParser.ts`)
+3. **ジェネレーター** (`sequenceGenerator.ts`)
+4. **ストア** (`sequenceStore.ts`)
+5. **カスタムノード** (`ActorNode`)
+6. **カスタムエッジ** (`MessageEdge`)
+7. **パネル** (`ActorPanel`, `MessagePanel`, `SequenceSidePanel`)
+8. **エディターコンポーネント** (`SequenceEditor`, `SequenceCanvas`, `SequenceToolbar`)
+9. **ユニットテスト**
+
+#### Phase 9-C: 統合
+1. **Webアプリ更新** (ホームページ、ルーティング)
+2. **i18n対応** (翻訳キー追加)
+3. **E2Eテスト追加**
+4. **ドキュメント更新**
+
+### 9.6 UI/UX設計
+
+#### ホームページ更新
+- 図タイプ選択カード（ER図、フローチャート、シーケンス図）
+- 各タイプの説明とアイコン
+
+#### フローチャートエディター
+- ツールバー: ノード形状選択、方向切り替え、Undo/Redo
+- キャンバス: ドラッグ&ドロップでノード配置、接続
+- サイドパネル: 選択ノード/エッジのプロパティ編集
+
+#### シーケンス図エディター
+- ツールバー: 参加者追加、メッセージ追加、Undo/Redo
+- キャンバス: タイムライン形式で表示
+- サイドパネル: 選択要素のプロパティ編集
