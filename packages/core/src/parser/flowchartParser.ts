@@ -199,7 +199,10 @@ class FlowchartTokenizer {
     return null;
   }
 
-  private readIdentifierOrKeyword(line: number, column: number): FlowchartToken {
+  private readIdentifierOrKeyword(
+    line: number,
+    column: number
+  ): FlowchartToken {
     let value = '';
     while (this.pos < this.input.length && /[a-zA-Z0-9_]/.test(this.peek())) {
       value += this.advance();
@@ -364,7 +367,8 @@ export class FlowchartParser {
         },
       };
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown parse error';
+      const message =
+        error instanceof Error ? error.message : 'Unknown parse error';
       this.errors.push({
         line: this.currentToken()?.line ?? 1,
         column: this.currentToken()?.column ?? 1,
@@ -593,11 +597,11 @@ export class FlowchartParser {
         id: uuidv4(),
         label:
           token.type === FlowchartTokenType.NODE_TEXT
-            ? token.nodeLabel ?? id
+            ? (token.nodeLabel ?? id)
             : id,
         shape:
           token.type === FlowchartTokenType.NODE_TEXT
-            ? token.nodeShape ?? 'rectangle'
+            ? (token.nodeShape ?? 'rectangle')
             : 'rectangle',
         position: { x: 0, y: 0 },
       };

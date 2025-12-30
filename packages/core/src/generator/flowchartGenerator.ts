@@ -9,7 +9,10 @@ import type {
 } from '../types/flowchart';
 
 /** ノード形状を開始・終了記号に変換 */
-function shapeToSymbols(shape: FlowchartNodeShape): { start: string; end: string } {
+function shapeToSymbols(shape: FlowchartNodeShape): {
+  start: string;
+  end: string;
+} {
   const shapeMap: Record<FlowchartNodeShape, { start: string; end: string }> = {
     rectangle: { start: '[', end: ']' },
     rounded: { start: '(', end: ')' },
@@ -44,7 +47,10 @@ function linkTypeToSymbol(linkType: FlowchartLinkType): string {
 }
 
 /** ノードID からMermaid用のIDを生成 */
-function getNodeMermaidId(node: FlowchartNode, nodeIdMap: Map<string, string>): string {
+function getNodeMermaidId(
+  node: FlowchartNode,
+  nodeIdMap: Map<string, string>
+): string {
   let mermaidId = nodeIdMap.get(node.id);
   if (!mermaidId) {
     // ラベルからIDを生成（英数字とアンダースコアのみ）
@@ -129,7 +135,10 @@ function generateSubgraph(
 
   // サブグラフ内のエッジ
   for (const edge of edges) {
-    if (subgraphNodeIds.has(edge.sourceNodeId) && subgraphNodeIds.has(edge.targetNodeId)) {
+    if (
+      subgraphNodeIds.has(edge.sourceNodeId) &&
+      subgraphNodeIds.has(edge.targetNodeId)
+    ) {
       const edgeLine = generateEdge(edge, nodeIdMap, nodeMap);
       if (edgeLine) {
         lines.push(`    ${edgeLine}`);
@@ -165,7 +174,7 @@ export function generateFlowchart(
   }
 
   // サブグラフに含まれないノードの定義を最初に出力
-  const topLevelNodes = diagram.nodes.filter(n => !subgraphNodeIds.has(n.id));
+  const topLevelNodes = diagram.nodes.filter((n) => !subgraphNodeIds.has(n.id));
   for (const node of topLevelNodes) {
     const nodeDef = generateNodeDefinition(node, nodeIdMap);
     lines.push(`    ${nodeDef}`);
@@ -188,7 +197,10 @@ export function generateFlowchart(
   for (const subgraph of diagram.subgraphs) {
     const subgraphNodeIdSet = new Set(subgraph.nodeIds);
     for (const edge of diagram.edges) {
-      if (subgraphNodeIdSet.has(edge.sourceNodeId) && subgraphNodeIdSet.has(edge.targetNodeId)) {
+      if (
+        subgraphNodeIdSet.has(edge.sourceNodeId) &&
+        subgraphNodeIdSet.has(edge.targetNodeId)
+      ) {
         subgraphEdgeIds.add(edge.id);
       }
     }

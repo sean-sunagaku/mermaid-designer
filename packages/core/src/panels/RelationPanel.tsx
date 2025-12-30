@@ -29,14 +29,18 @@ export const RelationPanel: React.FC<RelationPanelProps> = ({ relation }) => {
 
   const handleSourceCardinalityChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      updateRelation(relation.id, { sourceCardinality: e.target.value as Cardinality });
+      updateRelation(relation.id, {
+        sourceCardinality: e.target.value as Cardinality,
+      });
     },
     [relation.id, updateRelation]
   );
 
   const handleTargetCardinalityChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      updateRelation(relation.id, { targetCardinality: e.target.value as Cardinality });
+      updateRelation(relation.id, {
+        targetCardinality: e.target.value as Cardinality,
+      });
     },
     [relation.id, updateRelation]
   );
@@ -135,9 +139,13 @@ export const RelationPanel: React.FC<RelationPanelProps> = ({ relation }) => {
             onChange={handleIdentifyingChange}
             className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
           />
-          <span className="text-sm text-slate-600">{t('relationPanel.identifyingRelation')}</span>
+          <span className="text-sm text-slate-600">
+            {t('relationPanel.identifyingRelation')}
+          </span>
         </label>
-        <p className="text-xs text-slate-400 mt-1">{t('relationPanel.nonIdentifyingHint')}</p>
+        <p className="text-xs text-slate-400 mt-1">
+          {t('relationPanel.nonIdentifyingHint')}
+        </p>
       </div>
 
       {/* 削除ボタン */}

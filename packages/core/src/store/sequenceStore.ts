@@ -26,7 +26,10 @@ export interface SequenceState {
 export interface SequenceActions {
   // 参加者操作
   addParticipant: (participant?: Partial<SequenceParticipant>) => string;
-  updateParticipant: (id: string, updates: Partial<SequenceParticipant>) => void;
+  updateParticipant: (
+    id: string,
+    updates: Partial<SequenceParticipant>
+  ) => void;
   deleteParticipant: (id: string) => void;
   reorderParticipant: (id: string, newOrder: number) => void;
 
@@ -100,7 +103,10 @@ export const useSequenceStore = create<SequenceStore>()(
         return id;
       },
 
-      updateParticipant: (id: string, updates: Partial<SequenceParticipant>) => {
+      updateParticipant: (
+        id: string,
+        updates: Partial<SequenceParticipant>
+      ) => {
         set((state) => ({
           participants: state.participants.map((p) =>
             p.id === id ? { ...p, ...updates } : p
@@ -116,11 +122,11 @@ export const useSequenceStore = create<SequenceStore>()(
           messages: state.messages.filter(
             (m) => m.sourceParticipantId !== id && m.targetParticipantId !== id
           ),
-          notes: state.notes.filter(
-            (n) => !n.participantIds.includes(id)
-          ),
+          notes: state.notes.filter((n) => !n.participantIds.includes(id)),
           selectedParticipantId:
-            state.selectedParticipantId === id ? null : state.selectedParticipantId,
+            state.selectedParticipantId === id
+              ? null
+              : state.selectedParticipantId,
           isDirty: true,
         }));
         get().syncToCode();
@@ -139,10 +145,18 @@ export const useSequenceStore = create<SequenceStore>()(
             if (p.id === id) {
               return { ...p, order: newOrder };
             }
-            if (oldOrder < newOrder && p.order > oldOrder && p.order <= newOrder) {
+            if (
+              oldOrder < newOrder &&
+              p.order > oldOrder &&
+              p.order <= newOrder
+            ) {
               return { ...p, order: p.order - 1 };
             }
-            if (oldOrder > newOrder && p.order >= newOrder && p.order < oldOrder) {
+            if (
+              oldOrder > newOrder &&
+              p.order >= newOrder &&
+              p.order < oldOrder
+            ) {
               return { ...p, order: p.order + 1 };
             }
             return p;
@@ -210,10 +224,18 @@ export const useSequenceStore = create<SequenceStore>()(
             if (m.id === id) {
               return { ...m, order: newOrder };
             }
-            if (oldOrder < newOrder && m.order > oldOrder && m.order <= newOrder) {
+            if (
+              oldOrder < newOrder &&
+              m.order > oldOrder &&
+              m.order <= newOrder
+            ) {
               return { ...m, order: m.order - 1 };
             }
-            if (oldOrder > newOrder && m.order >= newOrder && m.order < oldOrder) {
+            if (
+              oldOrder > newOrder &&
+              m.order >= newOrder &&
+              m.order < oldOrder
+            ) {
               return { ...m, order: m.order + 1 };
             }
             return m;
@@ -250,7 +272,9 @@ export const useSequenceStore = create<SequenceStore>()(
 
       updateNote: (id: string, updates: Partial<SequenceNote>) => {
         set((state) => ({
-          notes: state.notes.map((n) => (n.id === id ? { ...n, ...updates } : n)),
+          notes: state.notes.map((n) =>
+            n.id === id ? { ...n, ...updates } : n
+          ),
           isDirty: true,
         }));
         get().syncToCode();

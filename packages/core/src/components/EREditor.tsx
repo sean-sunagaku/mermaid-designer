@@ -21,7 +21,9 @@ export const EREditor: React.FC<EREditorProps> = ({
 
   return (
     <ReactFlowProvider>
-      <div className={`er-editor flex flex-col h-full bg-slate-50 ${className}`}>
+      <div
+        className={`er-editor flex flex-col h-full bg-slate-50 ${className}`}
+      >
         {/* ツールバー */}
         <Toolbar />
 

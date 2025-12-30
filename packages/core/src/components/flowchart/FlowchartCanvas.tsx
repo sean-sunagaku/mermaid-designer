@@ -15,7 +15,10 @@ import 'reactflow/dist/style.css';
 import { useFlowchartStore, useFlowchartUndoRedo } from '../../store';
 import { FlowchartNode } from '../../nodes';
 import { FlowEdge } from '../../edges';
-import type { FlowchartNodeData, FlowchartEdgeData } from '../../types/flowchart';
+import type {
+  FlowchartNodeData,
+  FlowchartEdgeData,
+} from '../../types/flowchart';
 
 const nodeTypes = {
   flowchart: FlowchartNode,
@@ -63,7 +66,11 @@ export const FlowchartCanvas = () => {
       }
 
       // Ctrl/Cmd + Z: Undo
-      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key === 'z' &&
+        !event.shiftKey
+      ) {
         if (canUndo()) {
           undo();
           event.preventDefault();
@@ -72,7 +79,10 @@ export const FlowchartCanvas = () => {
       }
 
       // Ctrl/Cmd + Shift + Z または Ctrl/Cmd + Y: Redo
-      if ((event.ctrlKey || event.metaKey) && (event.key === 'y' || (event.key === 'z' && event.shiftKey))) {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        (event.key === 'y' || (event.key === 'z' && event.shiftKey))
+      ) {
         if (canRedo()) {
           redo();
           event.preventDefault();
@@ -94,13 +104,24 @@ export const FlowchartCanvas = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedNodeId, selectedEdgeId, addNode, deleteNode, deleteEdge, selectNode, undo, redo, canUndo, canRedo]);
+  }, [
+    selectedNodeId,
+    selectedEdgeId,
+    addNode,
+    deleteNode,
+    deleteEdge,
+    selectNode,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  ]);
 
   // ローカル位置管理: ストアとは独立して位置を管理
   // ストアにはドラッグ終了時にのみ保存し、undo/redo時にはストアから同期
-  const [localPositions, setLocalPositions] = useState<Map<string, { x: number; y: number }>>(
-    () => new Map(nodes.map((n) => [n.id, n.position]))
-  );
+  const [localPositions, setLocalPositions] = useState<
+    Map<string, { x: number; y: number }>
+  >(() => new Map(nodes.map((n) => [n.id, n.position])));
 
   // ドラッグ中かどうかを追跡（undo/redo時の同期制御用）
   const isDraggingRef = useRef(false);
@@ -135,7 +156,10 @@ export const FlowchartCanvas = () => {
       // → undo/redo による位置変更の可能性があるので、ストアから位置を同期
       const storePositionsChanged = nodes.some((node) => {
         const localPos = localPositions.get(node.id);
-        return localPos && (localPos.x !== node.position.x || localPos.y !== node.position.y);
+        return (
+          localPos &&
+          (localPos.x !== node.position.x || localPos.y !== node.position.y)
+        );
       });
 
       if (storePositionsChanged) {
@@ -288,9 +312,7 @@ export const FlowchartCanvas = () => {
         <Background gap={15} />
         <Controls />
         <MiniMap
-          nodeColor={(node) =>
-            node.selected ? '#3b82f6' : '#94a3b8'
-          }
+          nodeColor={(node) => (node.selected ? '#3b82f6' : '#94a3b8')}
           maskColor="rgb(248, 250, 252, 0.7)"
         />
       </ReactFlow>

@@ -1,14 +1,21 @@
 import { useSequenceStore } from '../../store';
 import type { SequenceParticipantType } from '../../types/sequence';
 
-const PARTICIPANT_TYPES: Array<{ value: SequenceParticipantType; label: string }> = [
+const PARTICIPANT_TYPES: Array<{
+  value: SequenceParticipantType;
+  label: string;
+}> = [
   { value: 'participant', label: '参加者' },
   { value: 'actor', label: 'アクター' },
 ];
 
 export const ParticipantPanel = () => {
-  const { participants, selectedParticipantId, updateParticipant, deleteParticipant } =
-    useSequenceStore();
+  const {
+    participants,
+    selectedParticipantId,
+    updateParticipant,
+    deleteParticipant,
+  } = useSequenceStore();
 
   const selectedParticipant = participants.find(
     (p) => p.id === selectedParticipantId

@@ -1,10 +1,9 @@
 import { memo } from 'react';
-import {
-  EdgeProps,
-  getBezierPath,
-  EdgeLabelRenderer,
-} from 'reactflow';
-import type { FlowchartEdgeData, FlowchartLinkType } from '../../types/flowchart';
+import { EdgeProps, getBezierPath, EdgeLabelRenderer } from 'reactflow';
+import type {
+  FlowchartEdgeData,
+  FlowchartLinkType,
+} from '../../types/flowchart';
 
 /** リンクタイプに応じたスタイルを取得 */
 const getLinkStyle = (

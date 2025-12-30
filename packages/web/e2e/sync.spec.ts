@@ -61,7 +61,9 @@ test.describe('GUI ↔ コード同期', () => {
     await redoButton.click();
   });
 
-  test('複数のエンティティとリレーションを含むコードが正しくパースされる', async ({ page }) => {
+  test('複数のエンティティとリレーションを含むコードが正しくパースされる', async ({
+    page,
+  }) => {
     const codeEditor = page.locator('.code-editor__textarea');
     await expect(codeEditor).toBeVisible();
 

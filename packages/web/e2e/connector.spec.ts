@@ -27,7 +27,9 @@ test.describe('コネクタ - 全方向ハンドル', () => {
     // 各方向のハンドルが存在することを確認
     const positions = ['top', 'right', 'bottom', 'left'];
     for (const pos of positions) {
-      const handle = node.locator(`.react-flow__handle[data-handlepos="${pos}"]`);
+      const handle = node.locator(
+        `.react-flow__handle[data-handlepos="${pos}"]`
+      );
       await expect(handle).toBeVisible();
     }
   });
@@ -43,12 +45,16 @@ test.describe('コネクタ - 全方向ハンドル', () => {
     const expectedHandleIds = ['top', 'right', 'bottom', 'left'];
 
     for (const handleId of expectedHandleIds) {
-      const handle = node.locator(`.react-flow__handle[data-handleid="${handleId}"]`);
+      const handle = node.locator(
+        `.react-flow__handle[data-handleid="${handleId}"]`
+      );
       await expect(handle).toBeVisible();
     }
   });
 
-  test('コードからリレーションを作成するとエッジが表示される', async ({ page }) => {
+  test('コードからリレーションを作成するとエッジが表示される', async ({
+    page,
+  }) => {
     // コードエディターでリレーションを含むコードを入力
     const codeEditor = page.locator('.code-editor__textarea');
     await codeEditor.fill(`erDiagram
@@ -77,7 +83,9 @@ test.describe('コネクタ - 全方向ハンドル', () => {
     await expect(secondNode.locator('.react-flow__handle')).toHaveCount(4);
   });
 
-  test('複数のリレーションを作成してもハンドルは正常に機能する', async ({ page }) => {
+  test('複数のリレーションを作成してもハンドルは正常に機能する', async ({
+    page,
+  }) => {
     // 複数のリレーションを含むコードを入力
     const codeEditor = page.locator('.code-editor__textarea');
     await codeEditor.fill(`erDiagram

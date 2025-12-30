@@ -36,7 +36,9 @@ function getParticipantMermaidName(
 }
 
 /** 参加者定義を生成 */
-function generateParticipantDefinition(participant: SequenceParticipant): string {
+function generateParticipantDefinition(
+  participant: SequenceParticipant
+): string {
   const type = participant.type === 'actor' ? 'actor' : 'participant';
   const id = participant.alias ?? participant.name;
 
@@ -51,8 +53,14 @@ function generateMessage(
   message: SequenceMessage,
   participantMap: Map<string, SequenceParticipant>
 ): string | null {
-  const sourceName = getParticipantMermaidName(message.sourceParticipantId, participantMap);
-  const targetName = getParticipantMermaidName(message.targetParticipantId, participantMap);
+  const sourceName = getParticipantMermaidName(
+    message.sourceParticipantId,
+    participantMap
+  );
+  const targetName = getParticipantMermaidName(
+    message.targetParticipantId,
+    participantMap
+  );
 
   if (!sourceName || !targetName) return null;
 
@@ -70,7 +78,7 @@ function generateNote(
   participantMap: Map<string, SequenceParticipant>
 ): string | null {
   const participantNames = note.participantIds
-    .map(id => getParticipantMermaidName(id, participantMap))
+    .map((id) => getParticipantMermaidName(id, participantMap))
     .filter((name): name is string => name !== null);
 
   if (participantNames.length === 0) return null;
@@ -90,10 +98,16 @@ function generateLoop(loop: SequenceLoop): { start: string; end: string } {
 }
 
 /** Altを生成 */
-function generateAlt(alt: SequenceAlt): { parts: Array<{ label: string; start: string }>; end: string } {
+function generateAlt(alt: SequenceAlt): {
+  parts: Array<{ label: string; start: string }>;
+  end: string;
+} {
   const parts = alt.conditions.map((condition, index) => ({
     label: condition.label,
-    start: index === 0 ? `    alt ${condition.label}` : `    else ${condition.label}`,
+    start:
+      index === 0
+        ? `    alt ${condition.label}`
+        : `    else ${condition.label}`,
   }));
   return {
     parts,
@@ -111,7 +125,16 @@ function generateOpt(opt: SequenceOpt): { start: string; end: string } {
 
 /** 全要素をorderでソートして統合 */
 interface OrderedElement {
-  type: 'message' | 'note' | 'loop-start' | 'loop-end' | 'alt-start' | 'alt-else' | 'alt-end' | 'opt-start' | 'opt-end';
+  type:
+    | 'message'
+    | 'note'
+    | 'loop-start'
+    | 'loop-end'
+    | 'alt-start'
+    | 'alt-else'
+    | 'alt-end'
+    | 'opt-start'
+    | 'opt-end';
   order: number;
   content: string;
 }
@@ -130,7 +153,9 @@ export function generateSequenceDiagram(
   }
 
   // 参加者定義を出力（order順）
-  const sortedParticipants = [...diagram.participants].sort((a, b) => a.order - b.order);
+  const sortedParticipants = [...diagram.participants].sort(
+    (a, b) => a.order - b.order
+  );
   for (const participant of sortedParticipants) {
     lines.push(generateParticipantDefinition(participant));
   }

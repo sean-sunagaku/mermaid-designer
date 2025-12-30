@@ -1,7 +1,16 @@
-import { ERDiagram, EREntity, ERRelation, Cardinality, GeneratorOptions } from '../types/ast';
+import {
+  ERDiagram,
+  EREntity,
+  ERRelation,
+  Cardinality,
+  GeneratorOptions,
+} from '../types/ast';
 
 /** カーディナリティをMermaid記号に変換 */
-function cardinalityToSymbol(cardinality: Cardinality, isLeft: boolean): string {
+function cardinalityToSymbol(
+  cardinality: Cardinality,
+  isLeft: boolean
+): string {
   // isLeft: true = 左側のエンティティ（ソース）、記号は } や | が線側
   // isLeft: false = 右側のエンティティ（ターゲット）、記号は { や | が線側
   switch (cardinality) {
@@ -54,7 +63,9 @@ function generateEntity(entity: EREntity, _options: GeneratorOptions): string {
       if (attr.isForeignKey) keys.push('FK');
       if (attr.isUnique && !attr.isPrimaryKey) keys.push('UK');
 
-      lines.push(generateAttributeLine(attr.type, attr.name, keys, attr.comment));
+      lines.push(
+        generateAttributeLine(attr.type, attr.name, keys, attr.comment)
+      );
     }
 
     lines.push('    }');
@@ -89,11 +100,16 @@ function generateRelation(
 }
 
 /** ER Diagramを生成 */
-export function generateERDiagram(diagram: ERDiagram, options: GeneratorOptions = {}): string {
+export function generateERDiagram(
+  diagram: ERDiagram,
+  options: GeneratorOptions = {}
+): string {
   const lines: string[] = ['erDiagram'];
 
   // エンティティをアルファベット順にソート
-  const sortedEntities = [...diagram.entities].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedEntities = [...diagram.entities].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   // エンティティマップを作成
   const entityMap = new Map<string, EREntity>();

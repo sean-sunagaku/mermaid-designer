@@ -7,12 +7,16 @@ export class EREditorProvider implements vscode.CustomTextEditorProvider {
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new EREditorProvider(context);
-    return vscode.window.registerCustomEditorProvider(EREditorProvider.viewType, provider, {
-      webviewOptions: {
-        retainContextWhenHidden: true,
-      },
-      supportsMultipleEditorsPerDocument: false,
-    });
+    return vscode.window.registerCustomEditorProvider(
+      EREditorProvider.viewType,
+      provider,
+      {
+        webviewOptions: {
+          retainContextWhenHidden: true,
+        },
+        supportsMultipleEditorsPerDocument: false,
+      }
+    );
   }
 
   public async resolveCustomTextEditor(
@@ -27,14 +31,19 @@ export class EREditorProvider implements vscode.CustomTextEditorProvider {
     };
 
     // HTMLを設定
-    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, document.getText());
+    webviewPanel.webview.html = this.getHtmlForWebview(
+      webviewPanel.webview,
+      document.getText()
+    );
 
     // ドキュメントの変更を監視
-    const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument((e) => {
-      if (e.document.uri.toString() === document.uri.toString()) {
-        this.updateWebview(webviewPanel.webview, e.document.getText());
+    const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(
+      (e) => {
+        if (e.document.uri.toString() === document.uri.toString()) {
+          this.updateWebview(webviewPanel.webview, e.document.getText());
+        }
       }
-    });
+    );
 
     // Webviewからのメッセージを処理
     webviewPanel.webview.onDidReceiveMessage((message) => {
@@ -63,11 +72,15 @@ export class EREditorProvider implements vscode.CustomTextEditorProvider {
 
   private async updateDocument(document: vscode.TextDocument, content: string) {
     const edit = new vscode.WorkspaceEdit();
-    edit.replace(document.uri, new vscode.Range(0, 0, document.lineCount, 0), content);
+    edit.replace(
+      document.uri,
+      new vscode.Range(0, 0, document.lineCount, 0),
+      content
+    );
     await vscode.workspace.applyEdit(edit);
   }
 
-  private getHtmlForWebview(webview: vscode.Webview, content: string): string {
+  private getHtmlForWebview(_webview: vscode.Webview, content: string): string {
     const escapedContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     return `<!DOCTYPE html>

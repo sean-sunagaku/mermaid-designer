@@ -9,6 +9,9 @@ npm run fmt
 echo "Running lint..."
 npm run lint
 
+echo "Running typecheck..."
+npm run typecheck
+
 echo "Running unit tests..."
 npm run test --workspace=@mermaid-er-editor/core
 

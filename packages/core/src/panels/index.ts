@@ -10,8 +10,4 @@ export {
 } from './flowchart';
 
 // Sequence
-export {
-  ParticipantPanel,
-  MessagePanel,
-  SequenceSidePanel,
-} from './sequence';
+export { ParticipantPanel, MessagePanel, SequenceSidePanel } from './sequence';

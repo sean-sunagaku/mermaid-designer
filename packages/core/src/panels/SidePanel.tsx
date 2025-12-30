@@ -6,7 +6,8 @@ import { RelationPanel } from './RelationPanel';
 
 export const SidePanel: React.FC = () => {
   const { t } = useTranslation();
-  const { entities, relations, selectedEntityId, selectedRelationId } = useERStore();
+  const { entities, relations, selectedEntityId, selectedRelationId } =
+    useERStore();
 
   const selectedEntity = entities.find((e) => e.id === selectedEntityId);
   const selectedRelation = relations.find((r) => r.id === selectedRelationId);

@@ -107,7 +107,9 @@ export const useFlowchartStore = create<FlowchartStore>()(
 
       updateNode: (id: string, updates: Partial<FlowchartNode>) => {
         set((state) => ({
-          nodes: state.nodes.map((n) => (n.id === id ? { ...n, ...updates } : n)),
+          nodes: state.nodes.map((n) =>
+            n.id === id ? { ...n, ...updates } : n
+          ),
           isDirty: true,
         }));
         get().syncToCode();
@@ -123,7 +125,8 @@ export const useFlowchartStore = create<FlowchartStore>()(
             ...sg,
             nodeIds: sg.nodeIds.filter((nid) => nid !== id),
           })),
-          selectedNodeId: state.selectedNodeId === id ? null : state.selectedNodeId,
+          selectedNodeId:
+            state.selectedNodeId === id ? null : state.selectedNodeId,
           isDirty: true,
         }));
         get().syncToCode();
@@ -159,7 +162,9 @@ export const useFlowchartStore = create<FlowchartStore>()(
 
       updateEdge: (id: string, updates: Partial<FlowchartEdge>) => {
         set((state) => ({
-          edges: state.edges.map((e) => (e.id === id ? { ...e, ...updates } : e)),
+          edges: state.edges.map((e) =>
+            e.id === id ? { ...e, ...updates } : e
+          ),
           isDirty: true,
         }));
         get().syncToCode();
@@ -168,7 +173,8 @@ export const useFlowchartStore = create<FlowchartStore>()(
       deleteEdge: (id: string) => {
         set((state) => ({
           edges: state.edges.filter((e) => e.id !== id),
-          selectedEdgeId: state.selectedEdgeId === id ? null : state.selectedEdgeId,
+          selectedEdgeId:
+            state.selectedEdgeId === id ? null : state.selectedEdgeId,
           isDirty: true,
         }));
         get().syncToCode();

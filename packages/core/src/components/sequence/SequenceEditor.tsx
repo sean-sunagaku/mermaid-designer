@@ -21,7 +21,9 @@ export const SequenceEditor: React.FC<SequenceEditorProps> = ({
 
   return (
     <ReactFlowProvider>
-      <div className={`sequence-editor flex flex-col h-full bg-slate-50 ${className}`}>
+      <div
+        className={`sequence-editor flex flex-col h-full bg-slate-50 ${className}`}
+      >
         {/* ツールバー */}
         <SequenceToolbar />
 
