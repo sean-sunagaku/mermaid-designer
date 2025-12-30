@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EREntity, ERAttribute } from '../types/ast';
+import { EREntity, ERAttribute, COMMON_ATTRIBUTE_TYPES } from '../types/ast';
 import { useERStore } from '../store';
 
 interface EntityPanelProps {
@@ -114,8 +114,14 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
           value={attribute.type}
           onChange={(e) => onUpdate({ type: e.target.value })}
           placeholder={t('entityPanel.typePlaceholder')}
-          className="w-24 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          list="attribute-type-options"
+          className="w-28 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
+        <datalist id="attribute-type-options">
+          {COMMON_ATTRIBUTE_TYPES.map((type) => (
+            <option key={type} value={type} />
+          ))}
+        </datalist>
       </div>
 
       {/* キーチェックボックス */}
