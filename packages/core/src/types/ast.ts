@@ -1,3 +1,21 @@
+/** よく使う属性型のプリセット */
+export const COMMON_ATTRIBUTE_TYPES = [
+  'int',
+  'string',
+  'varchar',
+  'text',
+  'boolean',
+  'date',
+  'datetime',
+  'timestamp',
+  'float',
+  'decimal',
+  'uuid',
+] as const;
+
+/** よく使う属性型の型 */
+export type CommonAttributeType = (typeof COMMON_ATTRIBUTE_TYPES)[number];
+
 /** カーディナリティ（多重度） */
 export type Cardinality =
   | 'ZERO_OR_ONE' // 0..1  (|o / o|)

@@ -1,7 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EREntity, ERAttribute } from '../types/ast';
+import { EREntity, ERAttribute, COMMON_ATTRIBUTE_TYPES } from '../types/ast';
 import { useERStore } from '../store';
+
+const CUSTOM_TYPE_VALUE = '__custom__';
 
 interface EntityPanelProps {
   entity: EREntity;
@@ -97,6 +99,19 @@ interface AttributeRowProps {
 
 const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDelete }) => {
   const { t } = useTranslation();
+  const isCommonType = COMMON_ATTRIBUTE_TYPES.includes(attribute.type as typeof COMMON_ATTRIBUTE_TYPES[number]);
+  const [isCustomMode, setIsCustomMode] = useState(!isCommonType && attribute.type !== '');
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value === CUSTOM_TYPE_VALUE) {
+      setIsCustomMode(true);
+      onUpdate({ type: '' });
+    } else {
+      setIsCustomMode(false);
+      onUpdate({ type: value });
+    }
+  };
 
   return (
     <div className="p-2 bg-slate-50 rounded-md space-y-2">
@@ -109,13 +124,45 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
           placeholder={t('entityPanel.namePlaceholder')}
           className="flex-1 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
-        <input
-          type="text"
-          value={attribute.type}
-          onChange={(e) => onUpdate({ type: e.target.value })}
-          placeholder={t('entityPanel.typePlaceholder')}
-          className="w-24 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-        />
+        {isCustomMode ? (
+          <div className="flex gap-1">
+            <input
+              type="text"
+              value={attribute.type}
+              onChange={(e) => onUpdate({ type: e.target.value })}
+              placeholder={t('entityPanel.typePlaceholder')}
+              className="w-20 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setIsCustomMode(false);
+                onUpdate({ type: 'string' });
+              }}
+              className="px-1 text-slate-400 hover:text-slate-600 text-sm"
+              title={t('entityPanel.backToSelect')}
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <select
+            value={isCommonType ? attribute.type : ''}
+            onChange={handleSelectChange}
+            className="w-28 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+          >
+            <option value="" disabled>
+              {t('entityPanel.typePlaceholder')}
+            </option>
+            {COMMON_ATTRIBUTE_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+            <option value={CUSTOM_TYPE_VALUE}>{t('entityPanel.customType')}</option>
+          </select>
+        )}
       </div>
 
       {/* キーチェックボックス */}
