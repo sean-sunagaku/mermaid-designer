@@ -36,6 +36,8 @@ jobs:
 
       - name: Build web application
         run: npm run build --workspace=@mermaid-er-editor/web
+        env:
+          GITHUB_PAGES: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

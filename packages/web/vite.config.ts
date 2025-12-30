@@ -4,7 +4,8 @@ import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: mode === 'production' ? '/mermaid-designer/' : '/',
+  // GitHub Pages deploy時のみ /mermaid-designer/ を使用（GITHUB_PAGES環境変数で制御）
+  base: process.env.GITHUB_PAGES ? '/mermaid-designer/' : '/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
