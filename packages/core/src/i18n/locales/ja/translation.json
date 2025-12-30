@@ -27,7 +27,9 @@
     "primaryKey": "PK",
     "foreignKey": "FK",
     "uniqueKey": "UK",
-    "deleteAttribute": "属性を削除"
+    "deleteAttribute": "属性を削除",
+    "customType": "カスタム...",
+    "backToSelect": "選択に戻る"
   },
   "relationPanel": {
     "sourceCardinality": "ソースカーディナリティ ({{name}})",

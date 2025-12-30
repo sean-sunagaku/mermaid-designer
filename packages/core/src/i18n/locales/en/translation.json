@@ -27,7 +27,9 @@
     "primaryKey": "PK",
     "foreignKey": "FK",
     "uniqueKey": "UK",
-    "deleteAttribute": "Delete attribute"
+    "deleteAttribute": "Delete attribute",
+    "customType": "Custom...",
+    "backToSelect": "Back to select"
   },
   "relationPanel": {
     "sourceCardinality": "Source Cardinality ({{name}})",
