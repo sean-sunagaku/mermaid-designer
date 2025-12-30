@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
+import { useTranslation } from 'react-i18next';
 import { EntityNodeData } from '../types/flow';
 
 const getAttributeIcon = (
@@ -14,6 +15,7 @@ const getAttributeIcon = (
 };
 
 export const EntityNode = memo(({ data, selected }: NodeProps<EntityNodeData>) => {
+  const { t } = useTranslation();
   const { entity } = data;
 
   return (
@@ -30,7 +32,9 @@ export const EntityNode = memo(({ data, selected }: NodeProps<EntityNodeData>) =
       {/* 属性一覧 */}
       <div className="entity-node__body bg-white rounded-b-md">
         {entity.attributes.length === 0 ? (
-          <div className="px-3 py-2 text-slate-400 text-sm italic">No attributes</div>
+          <div className="px-3 py-2 text-slate-400 text-sm italic">
+            {t('entityNode.noAttributes')}
+          </div>
         ) : (
           entity.attributes.map((attr) => {
             const icon = getAttributeIcon(attr.isPrimaryKey, attr.isForeignKey, attr.isUnique);

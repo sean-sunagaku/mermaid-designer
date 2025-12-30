@@ -1,42 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '@mermaid-er-editor/core';
 
 export const HomePage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center p-8">
-      <div className="max-w-2xl text-center">
-        <h1 className="text-5xl font-bold text-slate-800 mb-4">
-          Mermaid ER Diagram Editor
-        </h1>
-        <p className="text-xl text-slate-600 mb-8">
-          Create and edit ER diagrams visually with real-time Mermaid code synchronization
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+      {/* ヘッダー */}
+      <header className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </header>
 
-        <div className="flex gap-4 justify-center">
-          <Link
-            to="/editor"
-            className="px-8 py-3 bg-blue-500 text-white rounded-lg font-medium text-lg hover:bg-blue-600 transition-colors shadow-lg hover:shadow-xl"
-          >
-            Start Editing
-          </Link>
-        </div>
+      <div className="flex-1 flex flex-col items-center justify-center p-8">
+        <div className="max-w-2xl text-center">
+          <h1 className="text-5xl font-bold text-slate-800 mb-4">{t('homePage.title')}</h1>
+          <p className="text-xl text-slate-600 mb-8">{t('homePage.description')}</p>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FeatureCard
-            icon="🎨"
-            title="Visual Editing"
-            description="Drag and drop entities, connect relationships with intuitive UI"
-          />
-          <FeatureCard
-            icon="🔄"
-            title="Bidirectional Sync"
-            description="Edit visually or in code - changes sync automatically"
-          />
-          <FeatureCard
-            icon="📦"
-            title="Export Ready"
-            description="Export to Mermaid code, PNG, or SVG formats"
-          />
+          <div className="flex gap-4 justify-center">
+            <Link
+              to="/editor"
+              className="px-8 py-3 bg-blue-500 text-white rounded-lg font-medium text-lg hover:bg-blue-600 transition-colors shadow-lg hover:shadow-xl"
+            >
+              {t('homePage.startEditing')}
+            </Link>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FeatureCard
+              icon="🎨"
+              title={t('homePage.visualEditing')}
+              description={t('homePage.visualEditingDesc')}
+            />
+            <FeatureCard
+              icon="🔄"
+              title={t('homePage.bidirectionalSync')}
+              description={t('homePage.bidirectionalSyncDesc')}
+            />
+            <FeatureCard
+              icon="📦"
+              title={t('homePage.exportReady')}
+              description={t('homePage.exportReadyDesc')}
+            />
+          </div>
         </div>
       </div>
     </div>

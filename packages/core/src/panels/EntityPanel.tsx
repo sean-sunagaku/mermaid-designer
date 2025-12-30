@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EREntity, ERAttribute } from '../types/ast';
 import { useERStore } from '../store';
 
@@ -7,6 +8,7 @@ interface EntityPanelProps {
 }
 
 export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
+  const { t } = useTranslation();
   const { updateEntity, addAttribute, updateAttribute, deleteAttribute, deleteEntity } =
     useERStore();
 
@@ -22,17 +24,17 @@ export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
   }, [entity.id, addAttribute]);
 
   const handleDeleteEntity = useCallback(() => {
-    if (confirm(`Delete entity "${entity.name}"?`)) {
+    if (confirm(t('entityPanel.deleteConfirm', { name: entity.name }))) {
       deleteEntity(entity.id);
     }
-  }, [entity.id, entity.name, deleteEntity]);
+  }, [entity.id, entity.name, deleteEntity, t]);
 
   return (
     <div className="side-panel__content">
       {/* エンティティ名 */}
       <div className="side-panel__section px-4 py-3 border-b border-slate-100">
         <label className="side-panel__label block text-sm font-medium text-slate-600 mb-1">
-          Entity Name
+          {t('entityPanel.entityName')}
         </label>
         <input
           type="text"
@@ -46,13 +48,13 @@ export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
       <div className="side-panel__section px-4 py-3">
         <div className="flex items-center justify-between mb-2">
           <label className="side-panel__label text-sm font-medium text-slate-600">
-            Attributes
+            {t('entityPanel.attributes')}
           </label>
           <button
             onClick={handleAddAttribute}
             className="text-xs px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
           >
-            + Add
+            {t('entityPanel.addAttribute')}
           </button>
         </div>
 
@@ -68,7 +70,7 @@ export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
           ))}
 
           {entity.attributes.length === 0 && (
-            <p className="text-sm text-slate-400 italic">No attributes defined</p>
+            <p className="text-sm text-slate-400 italic">{t('entityPanel.noAttributes')}</p>
           )}
         </div>
       </div>
@@ -79,7 +81,7 @@ export const EntityPanel: React.FC<EntityPanelProps> = ({ entity }) => {
           onClick={handleDeleteEntity}
           className="w-full px-3 py-2 bg-red-50 text-red-600 rounded-md text-sm font-medium hover:bg-red-100 transition-colors"
         >
-          Delete Entity
+          {t('entityPanel.deleteEntity')}
         </button>
       </div>
     </div>
@@ -94,6 +96,8 @@ interface AttributeRowProps {
 }
 
 const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDelete }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="p-2 bg-slate-50 rounded-md space-y-2">
       {/* 名前と型 */}
@@ -102,14 +106,14 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
           type="text"
           value={attribute.name}
           onChange={(e) => onUpdate({ name: e.target.value })}
-          placeholder="name"
+          placeholder={t('entityPanel.namePlaceholder')}
           className="flex-1 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
         <input
           type="text"
           value={attribute.type}
           onChange={(e) => onUpdate({ type: e.target.value })}
-          placeholder="type"
+          placeholder={t('entityPanel.typePlaceholder')}
           className="w-24 px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
       </div>
@@ -123,7 +127,7 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
             onChange={(e) => onUpdate({ isPrimaryKey: e.target.checked })}
             className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
           />
-          <span>PK</span>
+          <span>{t('entityPanel.primaryKey')}</span>
         </label>
         <label className="flex items-center gap-1 cursor-pointer">
           <input
@@ -132,7 +136,7 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
             onChange={(e) => onUpdate({ isForeignKey: e.target.checked })}
             className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
           />
-          <span>FK</span>
+          <span>{t('entityPanel.foreignKey')}</span>
         </label>
         <label className="flex items-center gap-1 cursor-pointer">
           <input
@@ -141,12 +145,12 @@ const AttributeRow: React.FC<AttributeRowProps> = ({ attribute, onUpdate, onDele
             onChange={(e) => onUpdate({ isUnique: e.target.checked })}
             className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
           />
-          <span>UK</span>
+          <span>{t('entityPanel.uniqueKey')}</span>
         </label>
         <button
           onClick={onDelete}
           className="ml-auto text-red-500 hover:text-red-700"
-          title="Delete attribute"
+          title={t('entityPanel.deleteAttribute')}
         >
           ×
         </button>

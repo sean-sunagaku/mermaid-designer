@@ -1,0 +1,79 @@
+{
+  "common": {
+    "home": "Home",
+    "delete": "Delete",
+    "add": "Add",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "toolbar": {
+    "addEntity": "+ Add Entity",
+    "undo": "Undo",
+    "redo": "Redo",
+    "undoShortcut": "Undo (Ctrl+Z)",
+    "redoShortcut": "Redo (Ctrl+Y)",
+    "reset": "Reset",
+    "resetConfirm": "Reset the diagram? This will clear all entities and relations."
+  },
+  "entityPanel": {
+    "entityName": "Entity Name",
+    "attributes": "Attributes",
+    "addAttribute": "+ Add",
+    "noAttributes": "No attributes defined",
+    "deleteEntity": "Delete Entity",
+    "deleteConfirm": "Delete entity \"{{name}}\"?",
+    "namePlaceholder": "name",
+    "typePlaceholder": "type",
+    "primaryKey": "PK",
+    "foreignKey": "FK",
+    "uniqueKey": "UK",
+    "deleteAttribute": "Delete attribute"
+  },
+  "relationPanel": {
+    "sourceCardinality": "Source Cardinality ({{name}})",
+    "targetCardinality": "Target Cardinality ({{name}})",
+    "exactlyOne": "Exactly One",
+    "zeroOrOne": "Zero or One",
+    "oneOrMore": "One or More",
+    "zeroOrMore": "Zero or More",
+    "labelOptional": "Label (optional)",
+    "labelPlaceholder": "e.g., places, contains",
+    "identifyingRelation": "Identifying relationship (solid line)",
+    "nonIdentifyingHint": "Uncheck for non-identifying (dashed line)",
+    "deleteRelation": "Delete Relation",
+    "deleteConfirm": "Delete this relation?",
+    "unknown": "Unknown"
+  },
+  "sidePanel": {
+    "properties": "Properties",
+    "selectHint": "Select an entity or relation to edit its properties.",
+    "entity": "Entity: {{name}}",
+    "relation": "Relation"
+  },
+  "entityNode": {
+    "noAttributes": "No attributes"
+  },
+  "codeEditor": {
+    "title": "Mermaid Code",
+    "lineError": "Line {{line}}: {{message}}"
+  },
+  "homePage": {
+    "title": "Mermaid ER Diagram Editor",
+    "description": "Create and edit ER diagrams visually with real-time Mermaid code synchronization",
+    "startEditing": "Start Editing",
+    "visualEditing": "Visual Editing",
+    "visualEditingDesc": "Drag and drop entities, connect relationships with intuitive UI",
+    "bidirectionalSync": "Bidirectional Sync",
+    "bidirectionalSyncDesc": "Edit visually or in code - changes sync automatically",
+    "exportReady": "Export Ready",
+    "exportReadyDesc": "Export to Mermaid code, PNG, or SVG formats"
+  },
+  "editorPage": {
+    "backToHome": "Home",
+    "title": "Mermaid ER Diagram Editor"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "ja": "Japanese"
+  }
+}
