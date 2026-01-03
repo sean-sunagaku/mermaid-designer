@@ -1,0 +1,22 @@
+# Source files (dist/webview-dist only needed)
+src/**
+*.ts
+*.tsx
+tsconfig*.json
+build.mjs
+
+# Development files
+.gitignore
+.eslintrc*
+.prettierrc*
+
+# Build artifacts - sourcemaps
+**/*.map
+
+# Dependencies
+node_modules/**
+
+# Other
+.vscode/**
+**/*.md
+!README.md
