@@ -1,9 +1,35 @@
 import * as vscode from 'vscode';
 import { EREditorProvider } from './provider';
+import { MermaidCodeLensProvider, MermaidBlock } from './codelens';
+import { MermaidBlockEditorPanel } from './panel';
 
 export function activate(context: vscode.ExtensionContext) {
   // カスタムエディタプロバイダーを登録
   context.subscriptions.push(EREditorProvider.register(context));
+
+  // CodeLensプロバイダーを登録（Markdownファイル用）
+  const codeLensProvider = new MermaidCodeLensProvider();
+  context.subscriptions.push(
+    vscode.languages.registerCodeLensProvider(
+      { language: 'markdown', scheme: 'file' },
+      codeLensProvider
+    )
+  );
+  context.subscriptions.push(codeLensProvider);
+
+  // Mermaidブロック編集コマンドを登録
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'mermaid-er-editor.editBlock',
+      (documentUri: vscode.Uri, block: MermaidBlock) => {
+        MermaidBlockEditorPanel.createOrShow(
+          context.extensionUri,
+          documentUri,
+          block
+        );
+      }
+    )
+  );
 
   // コマンドを登録
   context.subscriptions.push(
@@ -47,4 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-export function deactivate() {}
+export function deactivate() {
+  // すべてのパネルをクリーンアップ
+  MermaidBlockEditorPanel.disposeAll();
+}

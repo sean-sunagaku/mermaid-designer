@@ -4,6 +4,11 @@
   "description": "Visual editor for Mermaid ER diagrams",
   "version": "0.1.0",
   "publisher": "mermaid-er-editor",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sean-sunagaku/mermaid-designer.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -17,7 +22,9 @@
     "database",
     "visual-editor"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "customEditors": [
@@ -40,6 +47,11 @@
         "command": "mermaid-er-editor.newDiagram",
         "title": "New ER Diagram",
         "category": "Mermaid ER"
+      },
+      {
+        "command": "mermaid-er-editor.editBlock",
+        "title": "Edit Mermaid ER Diagram",
+        "category": "Mermaid ER"
       }
     ]
   },
@@ -49,9 +61,11 @@
     "watch": "node build.mjs --watch",
     "package": "vsce package --no-dependencies",
     "clean": "rm -rf dist",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.webview.json"
   },
   "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@types/vscode": "^1.85.0",
     "@vscode/vsce": "^2.22.0",
     "esbuild": "^0.19.0"
